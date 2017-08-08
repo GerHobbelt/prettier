@@ -22,7 +22,10 @@ function genericPrint(path, options, print) {
 
   switch (n.kind) {
     case "Document": {
-      return join(concat([hardline, hardline]), path.map(print, "definitions"));
+      return concat([
+        join(concat([hardline, hardline]), path.map(print, "definitions")),
+        hardline
+      ]);
     }
     case "OperationDefinition": {
       return concat([
@@ -41,6 +44,7 @@ function genericPrint(path, options, print) {
                     )
                   ])
                 ),
+                options.trailingComma === "none" ? "" : ifBreak(","),
                 softline,
                 ")"
               ])
@@ -90,6 +94,7 @@ function genericPrint(path, options, print) {
                       )
                     ])
                   ),
+                  options.trailingComma === "none" ? "" : ifBreak(","),
                   softline,
                   ")"
                 ])
@@ -134,6 +139,7 @@ function genericPrint(path, options, print) {
               )
             ])
           ),
+          options.trailingComma === "none" ? "" : ifBreak(","),
           softline,
           "]"
         ])
@@ -143,7 +149,7 @@ function genericPrint(path, options, print) {
       return group(
         concat([
           "{",
-          n.fields.length > 0 ? " " : "",
+          options.bracketSpacing && n.fields.length > 0 ? " " : "",
           indent(
             concat([
               softline,
@@ -153,8 +159,9 @@ function genericPrint(path, options, print) {
               )
             ])
           ),
+          options.trailingComma === "none" ? "" : ifBreak(","),
           softline,
-          ifBreak("", n.fields.length > 0 ? " " : ""),
+          ifBreak("", options.bracketSpacing && n.fields.length > 0 ? " " : ""),
           "}"
         ])
       );
@@ -185,6 +192,7 @@ function genericPrint(path, options, print) {
                     )
                   ])
                 ),
+                options.trailingComma === "none" ? "" : ifBreak(","),
                 softline,
                 ")"
               ])

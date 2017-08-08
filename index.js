@@ -104,7 +104,11 @@ function findSiblingAncestors(startNodeAndParents, endNodeAndParents) {
   let resultEndNode = endNodeAndParents.node;
 
   for (const endParent of endNodeAndParents.parentNodes) {
-    if (util.locStart(endParent) >= util.locStart(startNodeAndParents.node)) {
+    if (
+      endParent.type !== "Program" &&
+      endParent.type !== "File" &&
+      util.locStart(endParent) >= util.locStart(startNodeAndParents.node)
+    ) {
       resultEndNode = endParent;
     } else {
       break;
@@ -112,7 +116,11 @@ function findSiblingAncestors(startNodeAndParents, endNodeAndParents) {
   }
 
   for (const startParent of startNodeAndParents.parentNodes) {
-    if (util.locEnd(startParent) <= util.locEnd(endNodeAndParents.node)) {
+    if (
+      startParent.type !== "Program" &&
+      startParent.type !== "File" &&
+      util.locEnd(startParent) <= util.locEnd(endNodeAndParents.node)
+    ) {
       resultStartNode = startParent;
     } else {
       break;
@@ -177,6 +185,16 @@ function isSourceElement(node) {
     case "VariableDeclaration":
     case "WhileStatement":
     case "WithStatement":
+    case "ClassDeclaration": // ES 2015
+    case "ImportDeclaration": // Module
+    case "ExportDefaultDeclaration": // Module
+    case "ExportNamedDeclaration": // Module
+    case "ExportAllDeclaration": // Module
+    case "TypeAlias": // Flow
+    case "InterfaceDeclaration": // Flow, Typescript
+    case "TypeAliasDeclaration": // Typescript
+    case "ExportAssignment": // Typescript
+    case "ExportDeclaration": // Typescript
       return true;
   }
   return false;
@@ -211,6 +229,14 @@ function calculateRange(text, opts, ast) {
     endNonWhitespace,
     isSourceElement
   );
+
+  if (!startNodeAndParents || !endNodeAndParents) {
+    return {
+      rangeStart: 0,
+      rangeEnd: 0
+    };
+  }
+
   const siblingAncestors = findSiblingAncestors(
     startNodeAndParents,
     endNodeAndParents

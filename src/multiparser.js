@@ -1,19 +1,25 @@
 "use strict";
 
 const util = require("./util");
-const mapDoc = require("./doc-utils").mapDoc;
+const docUtils = require("./doc-utils");
 const docBuilders = require("./doc-builders");
+const comments = require("./comments");
 const indent = docBuilders.indent;
 const hardline = docBuilders.hardline;
 const softline = docBuilders.softline;
 const concat = docBuilders.concat;
 
-function printSubtree(subtreeParser, options, expressionDocs) {
+function printSubtree(subtreeParser, path, print, options) {
   const next = Object.assign({}, { transformDoc: doc => doc }, subtreeParser);
-  next.options = Object.assign({}, options, next.options);
+  next.options = Object.assign({}, options, next.options, {
+    originalText: next.text
+  });
   const ast = require("./parser").parse(next.text, next.options);
+  const astComments = ast.comments;
+  delete ast.comments;
+  comments.attach(astComments, ast, next.text, next.options);
   const nextDoc = require("./printer").printAstToDoc(ast, next.options);
-  return next.transformDoc(nextDoc, expressionDocs);
+  return next.transformDoc(nextDoc, { path, print });
 }
 
 /**
@@ -64,9 +70,6 @@ function fromBabylonFlowOrTypeScript(path) {
         parentParent &&
         parentParent.type === "TaggedTemplateExpression" &&
         parent.quasis.length === 1 &&
-        // ((parentParent.tag.type === "MemberExpression" &&
-        //   parentParent.tag.object.name === "Relay" &&
-        //   parentParent.tag.property.name === "QL") ||
         ((parentParent.tag.type === "MemberExpression" &&
           parentParent.tag.object.name === "graphql" &&
           parentParent.tag.property.name === "experimental") ||
@@ -77,7 +80,10 @@ function fromBabylonFlowOrTypeScript(path) {
         return {
           options: { parser: "graphql" },
           transformDoc: doc =>
-            concat([indent(concat([softline, doc])), softline]),
+            concat([
+              indent(concat([softline, stripTrailingHardline(doc)])),
+              softline
+            ]),
           text: parent.quasis[0].value.raw
         };
       }
@@ -132,10 +138,45 @@ function fromHtmlParser2(path, options) {
 
       break;
     }
+
+    case "attribute": {
+      /*
+       * Vue binding sytax: JS expressions
+       * :class="{ 'some-key': value }"
+       * v-bind:id="'list-' + id"
+       * v-if="foo && !bar"
+       * @click="someFunction()"
+       */
+      if (/(^@)|(^v-)|:/.test(node.key) && !/^\w+$/.test(node.value)) {
+        return {
+          text: node.value,
+          options: {
+            parser: parseJavaScriptExpression,
+            // Use singleQuote since HTML attributes use double-quotes.
+            // TODO(azz): We still need to do an entity escape on the attribute.
+            singleQuote: true
+          },
+          transformDoc: doc => {
+            return concat([
+              node.key,
+              '="',
+              util.hasNewlineInRange(node.value, 0, node.value.length)
+                ? doc
+                : docUtils.removeLines(doc),
+              '"'
+            ]);
+          }
+        };
+      }
+    }
   }
 }
 
-function transformCssDoc(quasisDoc, expressionDocs) {
+function transformCssDoc(quasisDoc, parent) {
+  const parentNode = parent.path.getValue();
+  const expressionDocs = parentNode.expressions
+    ? parent.path.map(parent.print, "expressions")
+    : [];
   const newDoc = replacePlaceholders(quasisDoc, expressionDocs);
   if (!newDoc) {
     throw new Error("Couldn't insert all the expressions");
@@ -158,7 +199,7 @@ function replacePlaceholders(quasisDoc, expressionDocs) {
   }
 
   const expressions = expressionDocs.slice();
-  const newDoc = mapDoc(quasisDoc, doc => {
+  const newDoc = docUtils.mapDoc(quasisDoc, doc => {
     if (!doc || !doc.parts || !doc.parts.length) {
       return doc;
     }
@@ -195,6 +236,16 @@ function replacePlaceholders(quasisDoc, expressionDocs) {
   });
 
   return expressions.length === 0 ? newDoc : null;
+}
+
+function parseJavaScriptExpression(text, parsers) {
+  // Force parsing as an expression
+  const ast = parsers.babylon(`(${text})`);
+  // Extract expression from the declaration
+  return {
+    type: "File",
+    program: ast.program.body[0].expression
+  };
 }
 
 function getText(options, node) {

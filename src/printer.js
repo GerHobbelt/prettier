@@ -656,7 +656,16 @@ function genericPrintNoParens(path, options, print, args) {
     case "ExportNamedDeclaration":
       return printExportDeclaration(path, options, print);
     case "ExportAllDeclaration":
-      return concat(["export * from ", path.call(print, "source"), semi]);
+      parts.push("export ");
+
+      if (n.exportKind === "type") {
+        parts.push("type ");
+      }
+
+      parts.push("* from ", path.call(print, "source"), semi);
+
+      return concat(parts);
+
     case "ExportNamespaceSpecifier":
     case "ExportDefaultSpecifier":
       return path.call(print, "exported");
@@ -2029,7 +2038,8 @@ function genericPrintNoParens(path, options, print, args) {
       if (n.params) {
         return concat([
           "declare ",
-          printFunctionDeclaration(path, print, options)
+          printFunctionDeclaration(path, print, options),
+          semi
         ]);
       }
       return printFlowDeclaration(path, [
@@ -2059,6 +2069,31 @@ function genericPrintNoParens(path, options, print, args) {
       return concat(["declare export * from ", path.call(print, "source")]);
     case "DeclareExportDeclaration":
       return concat(["declare ", printExportDeclaration(path, options, print)]);
+    case "DeclareOpaqueType":
+    case "OpaqueType": {
+      parts.push(
+        "opaque type ",
+        path.call(print, "id"),
+        path.call(print, "typeParameters")
+      );
+
+      if (n.supertype) {
+        parts.push(": ", path.call(print, "supertype"));
+      }
+
+      if (n.impltype) {
+        parts.push(" = ", path.call(print, "impltype"));
+      }
+
+      parts.push(semi);
+
+      if (n.type === "DeclareOpaqueType") {
+        return printFlowDeclaration(path, parts);
+      }
+
+      return concat(parts);
+    }
+
     case "FunctionTypeAnnotation":
     case "TSFunctionType": {
       // FunctionTypeAnnotation is ambiguous:
@@ -2730,8 +2765,6 @@ function genericPrintNoParens(path, options, print, args) {
       return path.call(bodyPath => {
         return printStatementSequence(bodyPath, options, print);
       }, "body");
-    case "json-identifier":
-      return '"' + n.value + '"';
 
     default:
       /* istanbul ignore next */
@@ -2807,7 +2840,12 @@ function printPropertyKey(path, options, print) {
   const node = path.getNode();
   const key = node.key;
 
-  if (isStringLiteral(key) && isIdentifierName(key.value) && !node.computed) {
+  if (
+    isStringLiteral(key) &&
+    isIdentifierName(key.value) &&
+    !node.computed &&
+    options.parser !== "json"
+  ) {
     // 'a' -> a
     return path.call(
       keyPath => comments.printComments(keyPath, () => key.value, options),
@@ -3391,6 +3429,8 @@ function printTypeParameters(path, options, print, paramsKey) {
     (shouldHugType(n[paramsKey][0]) ||
       (n[paramsKey][0].type === "GenericTypeAnnotation" &&
         shouldHugType(n[paramsKey][0].id)) ||
+      (n[paramsKey][0].type === "TSTypeReference" &&
+        shouldHugType(n[paramsKey][0].typeName)) ||
       n[paramsKey][0].type === "NullableTypeAnnotation");
 
   if (shouldInline) {

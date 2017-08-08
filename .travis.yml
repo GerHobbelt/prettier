@@ -3,6 +3,7 @@ language: node_js
 node_js:
   - 4
   - stable
+dist: precise
 cache:
   yarn: true
   directories:
@@ -15,7 +16,7 @@ matrix:
     - env: NODE_ENV=production
   fast_finish: true
 install:
-  - yarn install --production=false
+  - yarn --production=false
 before_script:
   - if [ "${NODE_ENV}" = "production" ]; then yarn build; fi
 script:

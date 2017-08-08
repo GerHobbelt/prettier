@@ -151,6 +151,12 @@ FastPath.prototype.needsParens = function(options) {
     return false;
   }
 
+  // Closure compiler requires that type casted expressions to be surrounded by
+  // parentheses.
+  if (util.hasClosureCompilerTypeCastComment(options.originalText, node)) {
+    return true;
+  }
+
   // Identifiers never need parentheses.
   if (node.type === "Identifier") {
     return false;
@@ -304,6 +310,13 @@ FastPath.prototype.needsParens = function(options) {
         case "MemberExpression":
           return name === "object" && parent.object === node;
 
+        case "AssignmentExpression":
+          return (
+            parent.left === node &&
+            (node.type === "TSTypeAssertionExpression" ||
+              node.type === "TSAsExpression")
+          );
+
         case "BinaryExpression":
         case "LogicalExpression": {
           if (!node.operator && node.type !== "TSTypeAssertionExpression") {
@@ -351,7 +364,8 @@ FastPath.prototype.needsParens = function(options) {
         (parent.type === "TypeParameter" ||
           parent.type === "VariableDeclarator" ||
           parent.type === "TypeAnnotation" ||
-          parent.type === "GenericTypeAnnotation") &&
+          parent.type === "GenericTypeAnnotation" ||
+          parent.type === "TSTypeReference") &&
         (node.typeAnnotation.type === "TypeAnnotation" &&
           node.typeAnnotation.typeAnnotation.type !== "TSFunctionType" &&
           grandParent.type !== "TSTypeOperator")

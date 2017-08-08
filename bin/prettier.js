@@ -118,8 +118,12 @@ if (argv["find-config-path"] && filepatterns.length) {
 }
 
 function getOptionsForFile(filePath) {
-  return resolver
-    .resolveConfig(filePath, { configFile: argv["config"] })
+  const optionsPromise =
+    argv["config"] === false
+      ? Promise.resolve(null)
+      : resolver.resolveConfig(filePath);
+
+  return optionsPromise
     .then(options => {
       const parsedArgs = minimist(args, {
         boolean: booleanOptionNames,
@@ -339,7 +343,7 @@ if (
       "  --no-space-empty-fn      Omit space before empty function body. Defaults to false.\n" +
       "  --space-before-function-paren\n" +
       "                           Put a space before function parenthesis. Defaults to false.\n" +
-      "  --parser <flow|babylon|typescript|postcss|json>\n" +
+      "  --parser <flow|babylon|typescript|postcss|json|graphql>\n" +
       "                           Specify which parse to use. Defaults to babylon.\n" +
       "  --cursor-offset <int>    Print (to stderr) where a cursor at the given position would move to after formatting.\n" +
       "                           This option cannot be used with --range-start and --range-end\n" +

@@ -206,13 +206,13 @@ function genericPrint(path, options, print) {
     case "selector-combinator": {
       if (n.value === "+" || n.value === ">" || n.value === "~") {
         const parent = path.getParentNode();
-        const leading = parent.type === "selector-selector" &&
-          parent.nodes[0] === n
-          ? ""
-          : line;
+        const leading =
+          parent.type === "selector-selector" && parent.nodes[0] === n
+            ? ""
+            : line;
         return concat([leading, n.value, " "]);
       }
-      return n.value;
+      return n.value.trim() || line;
     }
     case "selector-universal": {
       return n.value;
@@ -383,7 +383,8 @@ function printNodeSequence(path, options, print) {
             { backwards: true }
           )) ||
         (node.nodes[i + 1].type === "css-atrule" &&
-          node.nodes[i + 1].name === "else")
+          node.nodes[i + 1].name === "else" &&
+          node.nodes[i].type !== "css-comment")
       ) {
         parts.push(" ");
       } else {

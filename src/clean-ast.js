@@ -70,6 +70,10 @@ function massageAST(ast) {
       delete newObj.params;
     }
 
+    if (ast.type === "selector-combinator") {
+      newObj.value = newObj.value.replace(/\s+/g, " ");
+    }
+
     if (ast.type === "media-feature") {
       newObj.value = newObj.value.replace(/ /g, "");
     }
@@ -157,7 +161,10 @@ function massageAST(ast) {
       ast.type === "TaggedTemplateExpression" &&
       (ast.tag.type === "MemberExpression" ||
         (ast.tag.type === "Identifier" &&
-          (ast.tag.name === "gql" || ast.tag.name === "graphql")))
+          (ast.tag.name === "gql" ||
+            ast.tag.name === "graphql" ||
+            ast.tag.name === "css")) ||
+        (ast.tag.type === "CallExpression" && ast.tag.callee.name === "styled"))
     ) {
       newObj.quasi.quasis.forEach(quasi => delete quasi.value);
     }

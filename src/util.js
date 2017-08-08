@@ -3,7 +3,6 @@
 function isExportDeclaration(node) {
   if (node) {
     switch (node.type) {
-      case "ExportDeclaration":
       case "ExportDefaultDeclaration":
       case "ExportDefaultSpecifier":
       case "DeclareExportDeclaration":
@@ -315,6 +314,64 @@ function getPrecedence(op) {
   return PRECEDENCE[op];
 }
 
+const equalityOperators = {
+  "==": true,
+  "!=": true,
+  "===": true,
+  "!==": true
+};
+const multiplicativeOperators = {
+  "*": true,
+  "/": true,
+  "%": true
+};
+const bitshiftOperators = {
+  ">>": true,
+  ">>>": true,
+  "<<": true
+};
+
+function shouldFlatten(parentOp, nodeOp) {
+  if (getPrecedence(nodeOp) !== getPrecedence(parentOp)) {
+    return false;
+  }
+
+  // ** is right-associative
+  // x ** y ** z --> x ** (y ** z)
+  if (parentOp === "**") {
+    return false;
+  }
+
+  // x == y == z --> (x == y) == z
+  if (equalityOperators[parentOp] && equalityOperators[nodeOp]) {
+    return false;
+  }
+
+  // x * y % z --> (x * y) % z
+  if (
+    (nodeOp === "%" && multiplicativeOperators[parentOp]) ||
+    (parentOp === "%" && multiplicativeOperators[nodeOp])
+  ) {
+    return false;
+  }
+
+  // x << y << z --> (x << y) << z
+  if (bitshiftOperators[parentOp] && bitshiftOperators[nodeOp]) {
+    return false;
+  }
+
+  return true;
+}
+
+function isBitwiseOperator(operator) {
+  return (
+    !!bitshiftOperators[operator] ||
+    operator === "|" ||
+    operator === "^" ||
+    operator === "&"
+  );
+}
+
 // Tests if an expression starts with `{`, or (if forbidFunctionAndClass holds) `function` or `class`.
 // Will be overzealous if there's already necessary grouping parentheses.
 function startsWithNoLookaheadToken(node, forbidFunctionAndClass) {
@@ -384,6 +441,21 @@ function isBlockComment(comment) {
   return comment.type === "Block" || comment.type === "CommentBlock";
 }
 
+function hasClosureCompilerTypeCastComment(text, node) {
+  // https://github.com/google/closure-compiler/wiki/Annotating-Types#type-casts
+  // Syntax example: var x = /** @type {string} */ (fruit);
+  return (
+    node.comments &&
+    node.comments.some(
+      comment =>
+        comment.leading &&
+        isBlockComment(comment) &&
+        comment.value.match(/^\*\s*@type\s*{[^}]+}\s*$/) &&
+        getNextNonSpaceNonCommentCharacter(text, comment) === "("
+    )
+  );
+}
+
 function getAlignmentSize(value, tabWidth, startIndex) {
   startIndex = startIndex || 0;
 
@@ -405,6 +477,8 @@ function getAlignmentSize(value, tabWidth, startIndex) {
 
 module.exports = {
   getPrecedence,
+  shouldFlatten,
+  isBitwiseOperator,
   isExportDeclaration,
   getParentExportDeclaration,
   getPenultimate,
@@ -425,5 +499,6 @@ module.exports = {
   startsWithNoLookaheadToken,
   hasBlockComments,
   isBlockComment,
+  hasClosureCompilerTypeCastComment,
   getAlignmentSize
 };

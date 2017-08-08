@@ -208,8 +208,8 @@ function requireParser(isSCSS) {
   return require("postcss-less");
 }
 
-function parse(text) {
-  const isLikelySCSS = !!text.match(/(\w\s*: [^}:]+|#){|\@import[^\n]+(url|,)/);
+function parse(text /*, parsers, opts*/) {
+  const isLikelySCSS = !!text.match(/(\w\s*: [^}:]+|#){|@import[^\n]+(url|,)/);
   try {
     return parseWithParser(requireParser(isLikelySCSS), text);
   } catch (e) {

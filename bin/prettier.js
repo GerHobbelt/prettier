@@ -79,9 +79,9 @@ const argv = minimist(args, {
     "list-different": "l"
   },
   unknown: param => {
-	if (param.startsWith("-")) {
+    if (param.startsWith("-")) {
       const paramName = param.replace(/--(no-)?/, "");
-	  if (
+      if (
         booleanOptionNames.indexOf(paramName) === -1 &&
         stringOptionNames.indexOf(paramName) === -1
       ) {
@@ -229,7 +229,7 @@ function getTrailingComma(argv) {
       // Allow user to customize each item separated with commas
       // see src/options.js
       return argv["trailing-comma"];
-    //throw new Error("Invalid option for --trailing-comma");
+      //throw new Error("Invalid option for --trailing-comma");
   }
 }
 

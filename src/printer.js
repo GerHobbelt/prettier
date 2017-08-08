@@ -3357,7 +3357,6 @@ function printExportDeclaration(path, options, print) {
             )
           : ""
       );
-
     } else {
       parts.push("{}");
     }

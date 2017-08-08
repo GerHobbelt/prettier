@@ -220,6 +220,14 @@ FastPath.prototype.needsParens = function(options) {
       return false;
     }
 
+    case "MemberExpression": {
+      return (
+        parent.type === "MemberExpression" &&
+        parent.object === node &&
+        node.optional
+      );
+    }
+
     case "SpreadElement":
     case "SpreadProperty":
       return (
@@ -458,7 +466,8 @@ FastPath.prototype.needsParens = function(options) {
     case "FunctionTypeAnnotation":
       return (
         parent.type === "UnionTypeAnnotation" ||
-        parent.type === "IntersectionTypeAnnotation"
+        parent.type === "IntersectionTypeAnnotation" ||
+        parent.type === "ArrayTypeAnnotation"
       );
 
     case "StringLiteral":

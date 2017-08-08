@@ -296,7 +296,7 @@ Just add Prettier as an ESLint rule using [eslint-plugin-prettier](https://githu
 ```js
 yarn add --dev prettier eslint-plugin-prettier
 
-// .eslintrc
+// .eslintrc.json
 {
   "plugins": [
     "prettier"
@@ -351,6 +351,7 @@ and add this config to your `package.json`:
   }
 }
 ```
+There is a limitation where if you stage specific lines this approach will stage the whole file after regardless. See this [issue](https://github.com/okonet/lint-staged/issues/62) for more info.
 
 See https://github.com/okonet/lint-staged#configuration for more details about how you can configure lint-staged.
 
@@ -765,7 +766,7 @@ Can be installed using the extension sidebar. Search for `Prettier - JavaScript 
 
 Can also be installed using `ext install prettier-vscode-with-tabs`
 
-[Check its repository for configuration and shortcuts](https://marketplace.visualstudio.com/items?itemName=passionkind.prettier-vscode-with-tabs)
+[Check its repository for configuration and shortcuts](https://github.com/prettier/prettier-vscode)
 
 ### Visual Studio
 
@@ -791,7 +792,7 @@ features enabled, but you can also use the
 `parser` API or `--parser` CLI [option](#options).
 
 All of JSX and Flow syntax is supported. In fact, the test suite in
-`tests` *is* the entire Flow test suite and they all pass.
+`tests/flow` *is* the entire Flow test suite and they all pass.
 
 Prettier also supports [TypeScript](https://www.typescriptlang.org/), CSS, [LESS](http://lesscss.org/), [SCSS](http://sass-lang.com), [JSON](http://json.org/), and [GraphQL](http://graphql.org/).
 

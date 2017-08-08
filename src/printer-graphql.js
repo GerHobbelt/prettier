@@ -39,12 +39,11 @@ function genericPrint(path, options, print) {
                   concat([
                     softline,
                     join(
-                      concat([",", ifBreak("", " "), softline]),
+                      concat([ifBreak("", ", "), softline]),
                       path.map(print, "variableDefinitions")
                     )
                   ])
                 ),
-                options.trailingComma === "none" ? "" : ifBreak(","),
                 softline,
                 ")"
               ])
@@ -89,12 +88,11 @@ function genericPrint(path, options, print) {
                     concat([
                       softline,
                       join(
-                        concat([",", ifBreak("", " "), softline]),
+                        concat([ifBreak("", ", "), softline]),
                         path.map(print, "arguments")
                       )
                     ])
                   ),
-                  options.trailingComma === "none" ? "" : ifBreak(","),
                   softline,
                   ")"
                 ])
@@ -134,12 +132,11 @@ function genericPrint(path, options, print) {
             concat([
               softline,
               join(
-                concat([",", ifBreak("", " "), softline]),
+                concat([ifBreak("", ", "), softline]),
                 path.map(print, "values")
               )
             ])
           ),
-          options.trailingComma === "none" ? "" : ifBreak(","),
           softline,
           "]"
         ])
@@ -154,12 +151,11 @@ function genericPrint(path, options, print) {
             concat([
               softline,
               join(
-                concat([",", ifBreak("", " "), softline]),
+                concat([ifBreak("", ", "), softline]),
                 path.map(print, "fields")
               )
             ])
           ),
-          options.trailingComma === "none" ? "" : ifBreak(","),
           softline,
           ifBreak("", options.bracketSpacing && n.fields.length > 0 ? " " : ""),
           "}"
@@ -187,12 +183,11 @@ function genericPrint(path, options, print) {
                   concat([
                     softline,
                     join(
-                      concat([",", ifBreak("", " "), softline]),
+                      concat([ifBreak("", ", "), softline]),
                       path.map(print, "arguments")
                     )
                   ])
                 ),
-                options.trailingComma === "none" ? "" : ifBreak(","),
                 softline,
                 ")"
               ])
@@ -211,6 +206,174 @@ function genericPrint(path, options, print) {
         ": ",
         path.call(print, "type"),
         n.defaultValue ? concat([" = ", path.call(print, "defaultValue")]) : ""
+      ]);
+    }
+
+    case "TypeExtensionDefinition": {
+      return concat(["extend ", path.call(print, "definition")]);
+    }
+
+    case "ObjectTypeDefinition": {
+      return concat([
+        "type ",
+        path.call(print, "name"),
+        n.interfaces.length > 0
+          ? concat([" implements ", join(", ", path.map(print, "interfaces"))])
+          : "",
+        printDirectives(path, print, n),
+        " {",
+        n.fields.length > 0
+          ? indent(
+              concat([hardline, join(hardline, path.map(print, "fields"))])
+            )
+          : "",
+        hardline,
+        "}"
+      ]);
+    }
+
+    case "FieldDefinition": {
+      return concat([
+        path.call(print, "name"),
+        n.arguments.length > 0
+          ? group(
+              concat([
+                "(",
+                indent(
+                  concat([
+                    softline,
+                    join(
+                      concat([ifBreak("", ", "), softline]),
+                      path.map(print, "arguments")
+                    )
+                  ])
+                ),
+                softline,
+                ")"
+              ])
+            )
+          : "",
+        ": ",
+        path.call(print, "type"),
+        printDirectives(path, print, n)
+      ]);
+    }
+
+    case "DirectiveDefinition": {
+      return concat([
+        "directive ",
+        "@",
+        path.call(print, "name"),
+        n.arguments.length > 0
+          ? group(
+              concat([
+                "(",
+                indent(
+                  concat([
+                    softline,
+                    join(
+                      concat([ifBreak("", ", "), softline]),
+                      path.map(print, "arguments")
+                    )
+                  ])
+                ),
+                softline,
+                ")"
+              ])
+            )
+          : "",
+        concat([" on ", join(" | ", path.map(print, "locations"))])
+      ]);
+    }
+
+    case "EnumTypeDefinition": {
+      return concat([
+        "enum ",
+        path.call(print, "name"),
+        printDirectives(path, print, n),
+        " {",
+        n.values.length > 0
+          ? indent(
+              concat([hardline, join(hardline, path.map(print, "values"))])
+            )
+          : "",
+        hardline,
+        "}"
+      ]);
+    }
+
+    case "EnumValueDefinition": {
+      return concat([
+        path.call(print, "name"),
+        printDirectives(path, print, n)
+      ]);
+    }
+
+    case "InputValueDefinition": {
+      return concat([
+        path.call(print, "name"),
+        ": ",
+        path.call(print, "type"),
+        n.defaultValue ? concat([" = ", path.call(print, "defaultValue")]) : "",
+        printDirectives(path, print, n)
+      ]);
+    }
+
+    case "InputObjectTypeDefinition": {
+      return concat([
+        "input ",
+        path.call(print, "name"),
+        printDirectives(path, print, n),
+        " {",
+        n.fields.length > 0
+          ? indent(
+              concat([hardline, join(hardline, path.map(print, "fields"))])
+            )
+          : "",
+        hardline,
+        "}"
+      ]);
+    }
+
+    case "SchemaDefinition": {
+      return concat([
+        "schema",
+        printDirectives(path, print, n),
+        " {",
+        n.operationTypes.length > 0
+          ? indent(
+              concat([
+                hardline,
+                join(hardline, path.map(print, "operationTypes"))
+              ])
+            )
+          : "",
+        hardline,
+        "}"
+      ]);
+    }
+
+    case "OperationTypeDefinition": {
+      return concat([
+        path.call(print, "operation"),
+        ": ",
+        path.call(print, "type")
+      ]);
+    }
+
+    case "InterfaceTypeDefinition": {
+      return concat([
+        "interface ",
+        path.call(print, "name"),
+        printDirectives(path, print, n),
+        " {",
+        n.fields.length > 0
+          ? indent(
+              concat([hardline, join(hardline, path.map(print, "fields"))])
+            )
+          : "",
+        hardline,
+        "}"
       ]);
     }
 
@@ -249,6 +412,14 @@ function genericPrint(path, options, print) {
           )
         ])
       );
+    }
+
+    case "ScalarTypeDefinition": {
+      return concat([
+        "scalar ",
+        path.call(print, "name"),
+        printDirectives(path, print, n)
+      ]);
     }
 
     case "NonNullType": {

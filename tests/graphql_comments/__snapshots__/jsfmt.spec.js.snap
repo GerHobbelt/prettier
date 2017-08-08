@@ -10,7 +10,7 @@ query (
  }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 query(
-  $string: String, # Some variable comment
+  $string: String # Some variable comment
   $bool: Boolean # Some comment
 ) {
   someField
@@ -27,6 +27,31 @@ query {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 query {
   someField # Trailing comment
+}
+
+`;
+
+exports[`tokens.graphql 1`] = `
+# import "./claimsFragment.gql"
+
+query claimsByBookingReferenceAndLastName($bookingReference: String!, $lastName: String!) {
+  claimsByBookingReferenceAndLastName(bookingReference: $bookingReference, lastName: $lastName) {
+    ... claim
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# import "./claimsFragment.gql"
+
+query claimsByBookingReferenceAndLastName(
+  $bookingReference: String!
+  $lastName: String!
+) {
+  claimsByBookingReferenceAndLastName(
+    bookingReference: $bookingReference
+    lastName: $lastName
+  ) {
+    ...claim
+  }
 }
 
 `;

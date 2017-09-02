@@ -5,9 +5,11 @@ import json from "rollup-plugin-json";
 import replace from "rollup-plugin-replace";
 
 export default Object.assign(baseConfig, {
-  entry: "bin/prettier.js",
-  dest: "dist/bin/prettier.js",
-  format: "cjs",
+  input: "bin/prettier.js",
+  output: {
+    file: "dist/bin/prettier.js",
+    format: "cjs"
+  },
   banner: "#!/usr/bin/env node",
   plugins: [
     replace({

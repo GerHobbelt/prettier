@@ -42,11 +42,42 @@ for (const parser of parsers) {
   if (parser === "postcss") {
     continue;
   }
+  if (parser === "flow") {
+    continue;
+  }
+  if (parser === "typescript") {
+    continue;
+  }
   shell.echo(`Bundling lib ${parser}...`);
   shell.exec(
     `rollup -c scripts/build/rollup.parser.config.js --environment parser:${parser}`
   );
 }
+
+shell.echo("Bundling lib flow...");
+// Flow won't work correctly with rollup :(
+shell.exec(
+  "webpack --hide-modules src/parser-flow.js dist/parser-flow.js"
+);
+
+shell.echo("Bundling lib typescript...");
+// TypeScript won't work correctly with rollup :(
+shell.exec(
+  "webpack --hide-modules src/parser-typescript.js dist/parser-typescript.js"
+);
+shell.echo("Remove require('fs') and require('module') from source-map-support in parser-typescript");
+shell.sed(
+  "-i",
+  /require\('fs'\)/,
+  "throw new Error('fs')",
+  "dist/parser-typescript.js"
+);
+shell.sed(
+  "-i",
+  /require\('module'\)/,
+  "throw new Error('module')",
+  "dist/parser-typescript.js"
+);
 
 shell.echo("Bundling lib postcss...");
 // PostCSS has dependency cycles and won't work correctly with rollup :(
@@ -79,11 +110,42 @@ for (const parser of parsers) {
   if (parser === "babylon") {
     continue;
   }
+  if (parser === "typescript") {
+    continue;
+  }
+  if (parser === "parse5") {
+    continue;
+  }
   shell.echo(`Bundling docs ${parser}...`);
   shell.exec(
     `rollup -c scripts/build/rollup.docs.config.js --environment filepath:parser-${parser}.js`
   );
 }
+
+shell.echo("Bundling docs typescript...");
+// TypeScript won't work correctly with rollup :(
+shell.exec(
+  `webpack --hide-modules src/parser-typescript.js ${docs}/parser-typescript.js`
+);
+shell.echo("Remove require('fs') and require('module') from source-map-support in parser-typescript");
+shell.sed(
+  "-i",
+  /require\('fs'\)/,
+  "throw new Error('fs')",
+  `${docs}/parser-typescript.js`
+);
+shell.sed(
+  "-i",
+  /require\('module'\)/,
+  "throw new Error('module')",
+  `${docs}/parser-typescript.js`
+);
+
+shell.echo("Bundling docs parse5...");
+// Parse5 won't work correctly with rollup :(
+shell.exec(
+  `webpack --hide-modules src/parser-parse5.js ${docs}/parser-parse5.js`
+);
 
 shell.echo();
 

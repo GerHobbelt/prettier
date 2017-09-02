@@ -9,11 +9,13 @@ const filename = filepath.replace(/.+\//, "");
 const basename = filename.replace(/\..+/, "");
 
 export default Object.assign(baseConfig, {
-  entry: "dist/" + filepath,
-  dest: "website/static/lib/" + filename,
-  format: "iife",
+  input: "dist/" + filepath,
+  output: {
+  	file: "website/static/lib/" + filename,
+  	format: "iife"
+  },
   plugins: [json(), resolve({ preferBuiltins: true }), commonjs(), globals()],
-  useStrict: false,
+  strict: false,
   moduleName: basename.replace(/.+-/, ""),
   external: ["assert", "fs", "module"]
 });

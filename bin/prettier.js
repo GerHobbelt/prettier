@@ -59,7 +59,7 @@ const argv = minimist(args, {
     "debug-print-doc",
     "debug-check",
     "with-node-modules"
-  ],
+  ].concat(booleanOptionNames),
   string: [
     "cursor-offset",
     "range-start",
@@ -68,7 +68,7 @@ const argv = minimist(args, {
     "config",
     "find-config-path",
     "ignore-path"
-  ],
+  ].concat(stringOptionNames),
   default: {
     color: true,
     "ignore-path": ".prettierignore"
@@ -80,14 +80,8 @@ const argv = minimist(args, {
   },
   unknown: param => {
     if (param.startsWith("-")) {
-      const paramName = param.replace(/--(no-)?/, "");
-      if (
-        booleanOptionNames.indexOf(paramName) === -1 &&
-        stringOptionNames.indexOf(paramName) === -1
-      ) {
-        console.warn("Ignored unknown option: " + param + "\n");
-        return false;
-      }
+      console.warn("Ignored unknown option: " + param + "\n");
+      return false;
     }
   }
 });

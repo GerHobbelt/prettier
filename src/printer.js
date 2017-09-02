@@ -2663,6 +2663,10 @@ function genericPrintNoParens(path, options, print, args) {
 
       return group(concat(parts));
     case "TSEnumDeclaration":
+      if (isNodeStartingWithDeclare(n, options)) {
+        parts.push("declare ");
+      }
+
       if (n.modifiers) {
         parts.push(printTypeScriptModifiers(path, options, print));
       }

@@ -462,8 +462,9 @@ function handleIfStatementComments(
   }
 
   // We unfortunately have no way using the AST or location of nodes to know
-  // if the comment is positioned before the condition parenthesis:
+  // if the comment is positioned before or after the condition parenthesis:
   //   if (a /* comment */) {}
+  //   if (a) /* comment */ {}
   // The only workaround I found is to look at the next character to see if
   // it is a ).
   if (getNextNonSpaceNonCommentCharacter(text, comment) === ")") {

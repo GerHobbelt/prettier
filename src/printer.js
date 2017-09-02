@@ -47,6 +47,19 @@ function getPrintFunction(options) {
   }
 }
 
+function hasIgnoreComment(path) {
+  const node = path.getValue();
+  return (
+    node &&
+    ((node.comments &&
+      node.comments.length > 0 &&
+      node.comments.some(
+        comment => comment.value.trim() === "prettier-ignore"
+      )) ||
+      hasJsxIgnoreComment(path))
+  );
+}
+
 function hasJsxIgnoreComment(path) {
   const node = path.getValue();
   const parent = path.getParentNode();
@@ -70,6 +83,7 @@ function hasJsxIgnoreComment(path) {
     prevSibling &&
     prevSibling.type === "JSXExpressionContainer" &&
     prevSibling.expression.type === "JSXEmptyExpression" &&
+    prevSibling.expression.comments &&
     prevSibling.expression.comments.find(
       comment => comment.value.trim() === "prettier-ignore"
     )
@@ -82,15 +96,7 @@ function genericPrint(path, options, printPath, args) {
   const node = path.getValue();
 
   // Escape hatch
-  if (
-    node &&
-    ((node.comments &&
-      node.comments.length > 0 &&
-      node.comments.some(
-        comment => comment.value.trim() === "prettier-ignore"
-      )) ||
-      hasJsxIgnoreComment(path))
-  ) {
+  if (hasIgnoreComment(path)) {
     return options.originalText.slice(util.locStart(node), util.locEnd(node));
   }
 
@@ -4846,13 +4852,14 @@ function printAstToDoc(ast, options, addAlignmentSize) {
     // UnionTypeAnnotation has to align the child without the comments
     let res;
     if (
-      (node && node.type === "JSXElement") ||
-      (parent &&
-        (parent.type === "UnionTypeAnnotation" ||
-          parent.type === "TSUnionType" ||
-          ((parent.type === "ClassDeclaration" ||
-            parent.type === "ClassExpression") &&
-            parent.superClass === node)))
+      ((node && node.type === "JSXElement") ||
+        (parent &&
+          (parent.type === "UnionTypeAnnotation" ||
+            parent.type === "TSUnionType" ||
+            ((parent.type === "ClassDeclaration" ||
+              parent.type === "ClassExpression") &&
+              parent.superClass === node)))) &&
+      !hasIgnoreComment(path)
     ) {
       res = genericPrint(path, options, printGenerically, args);
     } else {

@@ -79,18 +79,36 @@ const skipSpaces = skip(" \t");
 const skipToLineEnd = skip(",; \t");
 const skipEverythingButNewLine = skip(/[^\r\n]/);
 
-function skipInlineComment(text, index) {
+function skipInlineComment(text, index, opts) {
   if (index === false) {
     return false;
   }
 
-  if (text.charAt(index) === "/" && text.charAt(index + 1) === "*") {
-    for (let i = index + 2; i < text.length; ++i) {
+  const backwards = opts && opts.backwards;
+
+  if (
+    text.charAt(index) !== "/" ||
+    text.charAt(backwards ? index - 1 : index + 1) !== "*"
+  ) {
+    return index;
+  }
+
+  let i = backwards ? index - 2 : index + 2;
+
+  if (backwards) {
+    for (; i > 0; --i) {
+      if (text.charAt(i) === "*" && text.charAt(i - 1) === "/") {
+        return i - 2;
+      }
+    }
+  } else {
+    for (; i < text.length; ++i) {
       if (text.charAt(i) === "*" && text.charAt(i + 1) === "/") {
         return i + 2;
       }
     }
   }
+
   return index;
 }
 
@@ -194,6 +212,19 @@ function getNextNonSpaceNonCommentCharacter(text, node) {
     idx = skipInlineComment(text, idx);
     idx = skipTrailingComment(text, idx);
     idx = skipNewline(text, idx);
+  }
+  return text.charAt(idx);
+}
+
+function getPreviousNonSpaceNonCommentCharacter(text, node) {
+  let oldIdx = null;
+  let idx = locStart(node) - 1;
+  const traversalOptions = { backwards: true };
+  while (idx !== oldIdx) {
+    oldIdx = idx;
+    idx = skipSpaces(text, idx, traversalOptions);
+    idx = skipInlineComment(text, idx, traversalOptions);
+    idx = skipNewline(text, idx, traversalOptions);
   }
   return text.charAt(idx);
 }
@@ -593,6 +624,7 @@ module.exports = {
   getPenultimate,
   getLast,
   getNextNonSpaceNonCommentCharacter,
+  getPreviousNonSpaceNonCommentCharacter,
   skipWhitespace,
   skipSpaces,
   skipNewline,

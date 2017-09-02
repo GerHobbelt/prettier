@@ -49,21 +49,27 @@ function getPrintFunction(options) {
 
 function hasIgnoreComment(path) {
   const node = path.getValue();
+  return hasNodeIgnoreComment(node) || hasJsxIgnoreComment(path);
+}
+
+function hasNodeIgnoreComment(node) {
   return (
     node &&
-    ((node.comments &&
-      node.comments.length > 0 &&
-      node.comments.some(
-        comment => comment.value.trim() === "prettier-ignore"
-      )) ||
-      hasJsxIgnoreComment(path))
+    node.comments &&
+    node.comments.length > 0 &&
+    node.comments.some(comment => comment.value.trim() === "prettier-ignore")
   );
 }
 
 function hasJsxIgnoreComment(path) {
   const node = path.getValue();
   const parent = path.getParentNode();
-  if (!parent || node.type !== "JSXElement" || parent.type !== "JSXElement") {
+  if (
+    !parent ||
+    !node ||
+    node.type !== "JSXElement" ||
+    parent.type !== "JSXElement"
+  ) {
     return false;
   }
 
@@ -3754,7 +3760,8 @@ function printMemberChain(path, options, print) {
     groups[0].length === 1 &&
     (groups[0][0].node.type === "ThisExpression" ||
       (groups[0][0].node.type === "Identifier" &&
-        groups[0][0].node.name.match(/(^[A-Z])|^[_$]+$/)));
+        (groups[0][0].node.name.match(/(^[A-Z])|^[_$]+$/) ||
+          (groups[1].length && groups[1][0].node.computed))));
 
   function printGroup(printedGroup) {
     return concat(printedGroup.map(tuple => tuple.printed));
@@ -4491,7 +4498,7 @@ function hasTrailingComment(node) {
 
 function hasLeadingOwnLineComment(text, node) {
   if (node.type === "JSXElement") {
-    return false;
+    return hasNodeIgnoreComment(node);
   }
 
   const res =

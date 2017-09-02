@@ -250,7 +250,7 @@ function getPropertyPadding(options, path) {
   const nameLength = type === "Identifier"
     ? n.name.length
     : type === "NumericLiteral"
-      ? printNumber(n.extra.raw).length
+      ? util.printNumber(n.extra.raw).length
       : type === "StringLiteral" ? nodeStr(n, options).length : undefined;
 
   if (nameLength === undefined) {

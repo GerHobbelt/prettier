@@ -20,6 +20,11 @@ else if (4) {
 else {
 }
 
+if (1)
+{}
+else // comment
+{}
+
 if (5) // comment
 true
 

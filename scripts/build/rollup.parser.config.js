@@ -8,9 +8,11 @@ import uglify from "uglify-es";
 const parser = process.env.parser;
 
 export default Object.assign(baseConfig, {
-  entry: "src/parser-" + parser + ".js",
-  dest: "dist/parser-" + parser + ".js",
-  format: "cjs",
+  input: "src/parser-" + parser + ".js",
+  output: {
+    file: "dist/parser-" + parser + ".js",
+    format: "cjs"
+  },
   plugins: [
     parser === "typescript"
       ? replace({
@@ -41,5 +43,5 @@ export default Object.assign(baseConfig, {
     "os",
     "crypto"
   ],
-  useStrict: parser !== "flow"
+  strict: parser !== "flow"
 });

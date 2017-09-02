@@ -1,6 +1,6 @@
 {
   "name": "prettier",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "description": "Prettier is an opinionated code formatter",
   "bin": {
     "prettier": "./bin/prettier.js"
@@ -12,7 +12,7 @@
   "main": "./index.js",
   "dependencies": {
     "babel-code-frame": "7.0.0-alpha.12",
-    "babylon": "7.0.0-beta.17",
+    "babylon": "7.0.0-beta.22",
     "chalk": "2.1.0",
     "cosmiconfig": "2.2.2",
     "dashify": "0.2.2",
@@ -50,7 +50,7 @@
     "eslint-plugin-react": "7.1.0",
     "jest": "20.0.4",
     "mkdirp": "0.5.1",
-    "prettier": "1.5.3",
+    "prettier": "1.6.0",
     "rimraf": "2.6.1",
     "rollup": "0.45.2",
     "rollup-plugin-commonjs": "8.1.0",

@@ -24,3 +24,34 @@ if (1)
 {}
 else // comment
 {}
+
+if (5) // comment
+true
+
+if (6) // comment
+{true}
+else if (7) // comment
+true
+else // comment
+{true}
+
+if (8) // comment
+// comment
+{true}
+else if (9) // comment
+// comment
+true
+else // comment
+// comment
+{true}
+
+if (6) /* comment */ // comment
+{true}
+else if (7) /* comment */
+true
+else if (8) // comment /* comment */ // comment
+true
+else if (9) /* comment */ /* comment */ // comment
+true
+else /* comment */
+{true}

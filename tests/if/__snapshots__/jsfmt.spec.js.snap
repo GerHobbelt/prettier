@@ -1,5 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`curly_braces.js 1`] = `
+if(1){go();}else if(2){go();}else{go();}
+if(1)
+{
+go();
+}
+else if(2)
+{
+go();
+}
+else
+{
+go();
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if (1) {
+  go();
+} else if (2) {
+  go();
+} else {
+  go();
+}
+if (1) {
+  go();
+} else if (2) {
+  go();
+} else {
+  go();
+}
+
+`;
+
 exports[`else.js 1`] = `
 // Both functions below should be formatted exactly the same
 
@@ -55,6 +87,24 @@ async function f() {
 }
 
 async function f() {
+  if (untrackedChoice === 0) /* Cancel */
+    null;
+  else if (untrackedChoice === 1) /* Add */
+    shouldAmend = true;
+  else if (untrackedChoice === 2) /* Allow Untracked */
+    allowUntracked = true;
+}
+
+async function f() {
+  if (untrackedChoice === 0) /* Cancel */ // Cancel
+    null;
+  else if (untrackedChoice === 1) /* Add */ // Add
+    shouldAmend = true;
+  else if (untrackedChoice === 2) /* Allow Untracked */ // Allow Untracked
+    allowUntracked = true;
+}
+
+async function f() {
   if (untrackedChoice === 0)
     /* Cancel */ {
       return null;
@@ -90,6 +140,27 @@ async function f() {
   } else if (untrackedChoice === 2) {
     /* Allow Untracked */ allowUntracked = true;
   }
+}
+
+async function f() {
+  if (untrackedChoice === 0 /* Cancel */) null;
+  else if (untrackedChoice === 1 /* Add */) shouldAmend = true;
+  else if (untrackedChoice === 2 /* Allow Untracked */) allowUntracked = true;
+}
+
+async function f() {
+  if (
+    untrackedChoice === 0 /* Cancel */ // Cancel
+  )
+    null;
+  else if (
+    untrackedChoice === 1 /* Add */ // Add
+  )
+    shouldAmend = true;
+  else if (
+    untrackedChoice === 2 /* Allow Untracked */ // Allow Untracked
+  )
+    allowUntracked = true;
 }
 
 async function f() {

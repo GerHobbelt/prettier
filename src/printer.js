@@ -2315,7 +2315,7 @@ function genericPrintNoParens(path, options, print, args) {
         n.static ? "static " : "",
         isGetterOrSetter(n) ? n.kind + " " : "",
         variance || "",
-        path.call(print, "key"),
+        printPropertyKey(path, options, print),
         printOptionalToken(path),
         isFunctionNotation(n) ? "" : ": ",
         path.call(print, "value")
@@ -2477,7 +2477,7 @@ function genericPrintNoParens(path, options, print, args) {
         parts.push("[");
       }
 
-      parts.push(path.call(print, "key"));
+      parts.push(printPropertyKey(path, options, print));
 
       if (n.computed) {
         parts.push("]");
@@ -2652,8 +2652,11 @@ function genericPrintNoParens(path, options, print, args) {
       if (n.modifiers) {
         parts.push(printTypeScriptModifiers(path, options, print));
       }
+      if (n.const) {
+        parts.push("const ");
+      }
 
-      parts.push("enum ", path.call(print, "name"), " ");
+      parts.push("enum ", path.call(print, "id"), " ");
 
       if (n.members.length === 0) {
         parts.push(
@@ -2692,7 +2695,7 @@ function genericPrintNoParens(path, options, print, args) {
 
       return concat(parts);
     case "TSEnumMember":
-      parts.push(path.call(print, "name"));
+      parts.push(path.call(print, "id"));
       if (n.initializer) {
         parts.push(" = ", path.call(print, "initializer"));
       }

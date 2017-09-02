@@ -335,7 +335,7 @@ if (
       "  --break-before-else      Put `else` clause in a new line.\n" +
       "  --jsx-bracket-same-line  Put > on the last line instead of at a new line.\n" +
       "  --trailing-comma <none|es5|all>\n" +
-      "                           Print trailing commas wherever possible. Defaults to none.\n" +
+      "                           Print trailing commas wherever possible when multi-line. Defaults to none.\n" +
       "                           You can customize with a comma separated list. 'all' is equivalent to:\n" +
       "                           'array,object,import,export,arguments'\n" +
       "  --align-object-properties\n" +

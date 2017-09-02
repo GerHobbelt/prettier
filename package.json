@@ -5,7 +5,7 @@
   "bin": {
     "prettier": "./bin/prettier.js"
   },
-  "repository": "arijs/prettier-miscellaneous",
+  "repository": "GerHobbelt/prettier",
   "homepage": "https://prettier.io",
   "author": "Rafael Hengles",
   "license": "MIT",

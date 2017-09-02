@@ -11,8 +11,8 @@ const basename = filename.replace(/\..+/, "");
 export default Object.assign(baseConfig, {
   input: "dist/" + filepath,
   output: {
-  	file: "website/static/lib/" + filename,
-  	format: "iife"
+    file: "website/static/lib/" + filename,
+    format: "iife"
   },
   plugins: [json(), resolve({ preferBuiltins: true }), commonjs(), globals()],
   strict: false,

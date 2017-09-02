@@ -6,8 +6,8 @@ import json from "rollup-plugin-json";
 export default Object.assign(baseConfig, {
   input: "index.js",
   output: {
-  	file: "dist/index.js",
-  	format: "cjs"
+    file: "dist/index.js",
+    format: "cjs"
   },
   plugins: [json(), resolve({ preferBuiltins: true }), commonjs()],
   external: ["assert"]

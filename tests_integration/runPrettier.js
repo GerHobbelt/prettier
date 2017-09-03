@@ -1,51 +1,94 @@
-/*
- * runPrettier – spawns `prettier` process.
- * Adopted from Jest's integration tests suite.
- */
 "use strict";
 
 const path = require("path");
-const spawnSync = require("cross-spawn").sync;
 
-const PRETTIER_PATH = path.resolve(__dirname, "../bin/prettier.js");
+function runPrettier(dir, args, options) {
+  let status;
+  let stdout = "";
+  let stderr = "";
 
-// return the result of the spawned process:
-//  [ 'status', 'signal', 'output', 'pid', 'stdout', 'stderr',
-//    'envPairs', 'options', 'args', 'file' ]
-function runPrettier(dir, args, options, consoleLog) {
-  const isRelative = dir[0] !== "/";
+  const spiedProcessExit = jest.spyOn(process, "exit");
+  spiedProcessExit.mockImplementation(exitCode => {
+    if (status === undefined) {
+      status = exitCode || 0;
+    }
+  });
 
-  if (isRelative) {
-    dir = path.resolve(__dirname, dir);
+  const spiedStdoutWrite = jest.spyOn(process.stdout, "write");
+  spiedStdoutWrite.mockImplementation(text => {
+    if (status === undefined) {
+      stdout += text;
+    }
+  });
+
+  const spiedStderrWrite = jest.spyOn(process.stderr, "write");
+  spiedStderrWrite.mockImplementation(text => {
+    if (status === undefined) {
+      stderr += text;
+    }
+  });
+
+  const spiedConsoleLog = jest.spyOn(console, "log");
+  spiedConsoleLog.mockImplementation(text => {
+    if (status === undefined) {
+      stdout += text + "\n";
+    }
+  });
+
+  const spiedConsoleWarn = jest.spyOn(console, "warn");
+  spiedConsoleWarn.mockImplementation(text => {
+    if (status === undefined) {
+      stderr += text + "\n";
+    }
+  });
+
+  const spiedConsoleError = jest.spyOn(console, "error");
+  spiedConsoleError.mockImplementation(text => {
+    if (status === undefined) {
+      stderr += text + "\n";
+    }
+  });
+
+  const originalCwd = process.cwd();
+  const originalIsTTY = process.stdin.isTTY;
+  const originalArgv = process.argv;
+  const originalExitCode = process.exitCode;
+
+  process.chdir(normalizeDir(dir));
+  process.stdin.isTTY = false;
+  process.argv = ["path/to/node", "path/to/prettier/bin"].concat(args || []);
+
+  jest.resetModules();
+  jest.setMock("get-stream", () => ({
+    then: handler => handler((options && options.input) || "")
+  }));
+
+  try {
+    require("../bin/prettier");
+    status = status || process.exitCode || 0;
+  } catch (error) {
+    stderr += error.message;
+    status = 1;
+  } finally {
+    process.exitCode = originalExitCode;
+    process.stdin.isTTY = originalIsTTY;
+    process.argv = originalArgv;
+    process.chdir(originalCwd);
+
+    spiedProcessExit.mockRestore();
+    spiedStdoutWrite.mockRestore();
+    spiedStderrWrite.mockRestore();
+    spiedConsoleLog.mockRestore();
+    spiedConsoleWarn.mockRestore();
+    spiedConsoleError.mockRestore();
   }
 
-  consoleLog && console.log('before spawnSync', dir, args, options);
-  const result = spawnSync(
-    'node',
-    [PRETTIER_PATH].concat(args || []),
-    Object.assign({}, options, { cwd: dir })
-  );
+  return { status, stdout, stderr };
+}
 
-  result.stdout = result.stdout && result.stdout.toString();
-  result.stderr = result.stderr && result.stderr.toString();
-
-  consoleLog && console.log('after spawnSync', {
-    status: result.status,
-    stdout: result.stdout,
-    stderr: result.stderr,
-    envPairsLength: result.envPairs.length,
-    options: {
-      cwd: result.options.cwd,
-      file: result.options.file,
-      args: result.options.args,
-      envPairsLength: result.options.envPairs.length,
-      stdio: result.options.stdio
-    },
-    args: result.args,
-    file: result.file,
-    error: result.error
-  });
-  return result;
+function normalizeDir(dir) {
+  const isRelative = dir[0] !== "/";
+  return isRelative ? path.resolve(__dirname, dir) : dir;
 }
 
 module.exports = runPrettier;

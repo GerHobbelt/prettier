@@ -3220,6 +3220,24 @@ function canPrintParamsWithoutParens(node, options) {
 function printFunctionDeclaration(path, print, options) {
   const n = path.getValue();
   const parts = [];
+  const hasContent = (n.body && n.body.body && n.body.body.find(node => node.type !== "EmptyStatement"));
+  const hasDirectives = (n.body && n.body.directives && n.body.directives.length > 0);
+  const hasComments = (n.body && n.body.comments);
+  const isTypeScriptDecl = (n.type === "TSNamespaceFunctionDeclaration"); // this one always has a 'ReturnStatement' as (empty) body.
+  const isEmpty = !(hasContent || hasDirectives || hasComments);
+
+// if (!n.body || (n.body.type !== "BlockStatement" && n.body.type !== "ExpressionStatement")) {
+//   console.log('print function:', {
+//     hasContent,
+//     hasDirectives,
+//     hasComments,
+//     isTypeScriptDecl,
+//     isEmpty,
+//     noBody: !n.body,
+//     do_it: isEmpty && (options.noSpaceEmptyFn || isTypeScriptDecl || !n.body),
+//     n
+//   });
+// }
 
   if (n.async) {
     parts.push("async ");
@@ -3243,8 +3261,7 @@ function printFunctionDeclaration(path, print, options) {
         printReturnType(path, print)
       ])
     ),
-    options.noSpaceEmptyFn ? "" : n.body ? " " : "",
-    //options.noSpaceEmptyFn ? "" : " ",
+    isEmpty && (options.noSpaceEmptyFn || isTypeScriptDecl || !n.body) ? "" : " ",
     path.call(print, "body")
   );
 

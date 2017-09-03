@@ -1,6 +1,6 @@
 {
   "name": "@gerhobbelt/prettier-miscellaneous",
-  "version": "1.6.2-4",
+  "version": "1.6.2-5",
   "description": "Prettier Miscellaneous is a fork of Prettier with the goal of supporting minor extra options",
   "bin": {
     "prettier": "./bin/prettier.js"

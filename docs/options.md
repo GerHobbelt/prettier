@@ -102,16 +102,17 @@ Put the `>` of a multi-line JSX element at the end of the last line instead of b
 
 _available in v1.9.0+_
 
-Include parentheses around a sole arrow function parameter.
+Include parentheses around a lone parameter of an arrow function, when possible:
 
 Valid options:
 
 * `"avoid"` - Omit parens when possible. Example: `x => x`
+* `"callbacks"` - Prefer `(x) => x`, except in callbacks. Example: `a.map(x => x.id)`
 * `"always"` - Always include parens. Example: `(x) => x`
 
-| Default   | CLI Override                                    | API Override                                    |
-| --------- | ----------------------------------------------- | ----------------------------------------------- |
-| `"avoid"` | <code>--arrow-parens <avoid&#124;always></code> | <code>arrowParens: "<avoid&#124;always>"</code> |
+Default | CLI Override | API Override
+--------|--------------|-------------
+`"avoid"` | `--arrow-fn-parens <avoid,callbacks,always>` | `arrowFnParens: "<avoid,callbacks,always>"`
 
 ## Range
 

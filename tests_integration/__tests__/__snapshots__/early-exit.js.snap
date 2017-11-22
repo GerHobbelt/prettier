@@ -3,14 +3,15 @@
 exports[`show detailed usage with --help arrow-parens (stderr) 1`] = `""`;
 
 exports[`show detailed usage with --help arrow-parens (stdout) 1`] = `
-"--arrow-parens <avoid|always>
+"--arrow-fn-parens <avoid|callbacks|always>
 
-  Include parentheses around a sole arrow function parameter.
+  Whether to print parentheses around a lone arrow function parameter.
 
 Valid options:
 
-  avoid    Omit parens when possible. Example: \`x => x\`
-  always   Always include parens. Example: \`(x) => x\`
+  avoid       Omit parens wherever possible, like \`x => x\`.
+  callbacks   Prefer to add parens, like \`(x) => x\`, except in callbacks, like \`a.map(x => x.id)\`.
+  always      Always add parens, like \`(x) => x\`.
 
 Default: avoid
 "
@@ -495,8 +496,8 @@ Output options:
 
 Format options:
 
-  --arrow-parens <avoid|always>
-                           Include parentheses around a sole arrow function parameter.
+  --arrow-fn-parens <avoid|callbacks|always>
+                           Whether to print parentheses around a lone arrow function parameter.
                            Defaults to avoid.
   --no-bracket-spacing     Do not print spaces between brackets.
   --jsx-bracket-same-line  Put > on the last line instead of at a new line.
@@ -631,8 +632,8 @@ Output options:
 
 Format options:
 
-  --arrow-parens <avoid|always>
-                           Include parentheses around a sole arrow function parameter.
+  --arrow-fn-parens <avoid|callbacks|always>
+                           Whether to print parentheses around a lone arrow function parameter.
                            Defaults to avoid.
   --no-bracket-spacing     Do not print spaces between brackets.
   --jsx-bracket-same-line  Put > on the last line instead of at a new line.

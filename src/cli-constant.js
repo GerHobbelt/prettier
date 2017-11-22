@@ -81,12 +81,17 @@ const detailedOptions = normalizeDetailedOptions({
     type: "choice",
     category: CATEGORY_FORMAT,
     forwardToApi: true,
-    description: "Include parentheses around a sole arrow function parameter.",
+    description: "Include parentheses around a lone arrow function parameter."
     default: "avoid",
     choices: [
       {
         value: "avoid",
-        description: "Omit parens when possible. Example: `x => x`"
+        description: "Omit parens wherever possible, like `x => x`."
+      },
+      {
+        value: "callbacks",
+        description:
+          "Prefer to add parens, like `(x) => x`, except in callbacks, like `a.map(x => x.id)`."
       },
       {
         value: "always",

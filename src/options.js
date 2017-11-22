@@ -19,13 +19,18 @@ const defaults = {
   bracketSpacing: true,
   jsxBracketSameLine: false,
   parser: "babylon",
+  semi: true,
+  arrowFnParens: "avoid",
   insertPragma: false,
   requirePragma: false,
-  semi: true,
   proseWrap: true,
   keepCallArgumentsOnLine: false,
   arrowParens: "avoid"
 };
+
+const trailingCommaEnum = ["none", "es5", "all"];
+
+const arrowFnParensEnum = ["avoid", "default", "always"];
 
 const exampleConfig = Object.assign({}, defaults, {
   filepath: "path/to/Filename",
@@ -71,6 +76,26 @@ function normalize(options) {
     console.warn(
       "Warning: `trailingComma` without any argument is deprecated. " +
         'Specify "none", "es5", or "all".'
+    );
+  } else if (
+    normalized.trailingComma &&
+    trailingCommaEnum.indexOf(normalized.trailingComma) < 0
+  ) {
+    console.warn(
+      `Warning: \`trailingComma\` must be one of ${trailingCommaEnum.join(
+        ", "
+      )} - received '${normalized.trailingComma}'.`
+    );
+  }
+
+  if (
+    normalized.arrowFnParens &&
+    arrowFnParensEnum.indexOf(normalized.arrowFnParens) < 0
+  ) {
+    console.warn(
+      `Warning: \`arrowFnParens\` must be one of ${arrowFnParensEnum.join(
+        ", "
+      )} - received '${normalized.arrowFnParens}'.`
     );
   }
 

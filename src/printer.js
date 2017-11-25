@@ -1731,8 +1731,17 @@ function genericPrintNoParens(path, options, print, args) {
             isBinaryish(n.expression)));
 
       if (shouldInline) {
+        const printExpression =
+          n.expression.type !== "ArrowFunctionExpression"
+            ? print
+            : p => print(p, { expandLastArg: true });
         return group(
-          concat(["{", path.call(print, "expression"), lineSuffixBoundary, "}"])
+          concat([
+            "{",
+            path.call(printExpression, "expression"),
+            lineSuffixBoundary,
+            "}"
+          ])
         );
       }
 
@@ -1774,6 +1783,14 @@ function genericPrintNoParens(path, options, print, args) {
         );
       }
 
+      const bracketSameLine =
+        options.jsxBracketSameLine &&
+        !(
+          n.name &&
+          ((n.name.trailingComments && n.name.trailingComments.length) ||
+            (n.name.comments && n.name.comments.length))
+        );
+
       return group(
         concat([
           "<",
@@ -1784,9 +1801,9 @@ function genericPrintNoParens(path, options, print, args) {
                 path.map(attr => concat([line, print(attr)]), "attributes")
               )
             ),
-            n.selfClosing ? line : options.jsxBracketSameLine ? ">" : softline
+            n.selfClosing ? line : bracketSameLine ? ">" : softline
           ]),
-          n.selfClosing ? "/>" : options.jsxBracketSameLine ? "" : ">"
+          n.selfClosing ? "/>" : bracketSameLine ? "" : ">"
         ])
       );
     }
@@ -3773,13 +3790,21 @@ function printMemberChain(path, options, print) {
   // node is just an identifier with the name starting with a capital
   // letter, just a sequence of _$ or this. The rationale is that they are
   // likely to be factories.
+  function isFactory(name) {
+    return name.match(/(^[A-Z])|^[_$]+$/);
+  }
   const shouldMerge =
     groups.length >= 2 &&
     !groups[1][0].node.comments &&
-    groups[0].length === 1 &&
-    (groups[0][0].node.type === "ThisExpression" ||
-      (groups[0][0].node.type === "Identifier" &&
-        (groups[0][0].node.name.match(/(^[A-Z])|^[_$]+$/) ||
+    ((groups[0].length === 1 &&
+      (groups[0][0].node.type === "ThisExpression" ||
+        (groups[0][0].node.type === "Identifier" &&
+          (isFactory(groups[0][0].node.name) ||
+            (groups[1].length && groups[1][0].node.computed))))) ||
+      (groups[0].length > 1 &&
+        groups[0][groups[0].length - 1].node.type === "MemberExpression" &&
+        groups[0][groups[0].length - 1].node.property.type === "Identifier" &&
+        (isFactory(groups[0][groups[0].length - 1].node.property.name) ||
           (groups[1].length && groups[1][0].node.computed))));
 
   function printGroup(printedGroup) {

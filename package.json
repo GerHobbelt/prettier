@@ -1,6 +1,6 @@
 {
   "name": "@gerhobbelt/prettier",
-  "version": "1.7.3-3",
+  "version": "1.7.4-3",
   "description": "Prettier is an opinionated code formatter",
   "bin": {
     "prettier": "./bin/prettier.js"
@@ -72,7 +72,10 @@
     "webpack": "3.5.5"
   },
   "scripts": {
+    "origPrepublishOnly": "echo \"Error: must publish from dist/\" && exit 1",
+    "origPrepare-release": "yarn && yarn build && yarn test:dist",
     "test": "jest",
+    "test:dist": "cross-env NODE_ENV=production yarn test",
     "posttest": "npm run test-tabs && npm run test-tabs-inv",
     "test-tabs": "node ./bin/prettier.js --use-tabs --bracket-spacing --trailing-comma array,object -- ./bin/prettier.js > ./bin/prettier-with-tabs.js",
     "test-tabs-inv": "node ./bin/prettier-with-tabs.js -- ./bin/prettier-with-tabs.js > ./bin/prettier-spaces.js",

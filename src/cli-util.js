@@ -41,6 +41,7 @@ function getParserOption(argv) {
   }
 
   // For backward compatibility. Deprecated in 0.0.10
+  /* istanbul ignore if */
   if (argv["flow-parser"]) {
     console.warn("`--flow-parser` is deprecated. Use `--parser flow` instead.");
     return "flow";
@@ -256,8 +257,8 @@ function eachFilename(argv, patterns, callback) {
     patterns = patterns.concat(["!**/node_modules/**", "!./node_modules/**"]);
   }
 
-  const filePaths = globby.sync(patterns, { dot: true });
   try {
+    const filePaths = globby.sync(patterns, { dot: true });
     if (filePaths.length === 0) {
       console.error(`No matching files. Patterns tried: ${patterns.join(" ")}`);
       process.exitCode = 2;
@@ -359,6 +360,7 @@ function formatFiles(argv, filepatterns) {
 
 module.exports = {
   resolveConfig,
+  format,
   formatStdin,
   formatFiles
 };

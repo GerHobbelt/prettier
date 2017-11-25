@@ -1,6 +1,6 @@
 {
   "name": "@gerhobbelt/prettier",
-  "version": "1.7.4-3",
+  "version": "1.8.0-3",
   "description": "Prettier is an opinionated code formatter",
   "bin": {
     "prettier": "./bin/prettier.js"
@@ -62,7 +62,6 @@
     "eslint-plugin-prettier": "2.2.0",
     "eslint-plugin-react": "7.3.0",
     "jest": "21.1.0",
-    "markdown-toc": "1.1.0",
     "mkdirp": "0.5.1",
     "prettier": "1.7.3",
     "rimraf": "2.6.2",
@@ -90,7 +89,7 @@
     "test-integration": "jest tests_integration",
     "lint": "cross-env EFF_NO_LINK_RULES=true eslint . --format node_modules/eslint-friendly-formatter",
     "build": "node ./scripts/build/build.js",
-    "toc": "node ./scripts/table-of-contents.js",
+    "check-deps": "node ./scripts/check-deps.js"
     "pub": "cd dist && npm publish --access public"
   }
 }

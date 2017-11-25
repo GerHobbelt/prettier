@@ -66,9 +66,10 @@ function genericPrint(path, options, print) {
 
   switch (node.type) {
     case "root":
-      return normalizeDoc(
-        concat([printChildren(path, options, print), hardline])
-      );
+      return concat([
+        normalizeDoc(printChildren(path, options, print)),
+        hardline
+      ]);
     case "paragraph":
       return printChildren(path, options, print, {
         postprocessor: fill
@@ -203,6 +204,8 @@ function genericPrint(path, options, print) {
     }
     case "yaml":
       return concat(["---", hardline, node.value, hardline, "---"]);
+    case "toml":
+      return concat(["+++", hardline, node.value, hardline, "+++"]);
     case "html": {
       const parentNode = path.getParentNode();
       return parentNode.type === "root" &&
@@ -246,7 +249,12 @@ function genericPrint(path, options, print) {
         node.checked === null ? "" : node.checked ? "[x] " : "[ ] ";
       return concat([
         prefix,
-        align(" ".repeat(prefix.length), printChildren(path, options, print))
+        printChildren(path, options, print, {
+          processor: (childPath, index) =>
+            index === 0 && childPath.getValue().type !== "list"
+              ? align(" ".repeat(prefix.length), childPath.call(print))
+              : childPath.call(print)
+        })
       ]);
     }
     case "thematicBreak": {

@@ -11,12 +11,7 @@ const fill = docBuilders.fill;
 const align = docBuilders.align;
 const docPrinter = require("./doc-printer");
 const printDocToString = docPrinter.printDocToString;
-const escapeStringRegexp = require("escape-string-regexp");
-
-// http://spec.commonmark.org/0.25/#ascii-punctuation-character
-const asciiPunctuationPattern = escapeStringRegexp(
-  "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
-);
+const punctuationCharRange = util.punctuationCharRange;
 
 const SINGLE_LINE_NODE_TYPES = [
   "heading",
@@ -82,11 +77,22 @@ function genericPrint(path, options, print) {
     case "sentence":
       return printChildren(path, options, print);
     case "word":
-      return getAncestorNode(path, "inlineCode")
-        ? node.value
-        : node.value
-            .replace(/(^|[^\\])\*/g, "$1\\*") // escape all unescaped `*` and `_`
-            .replace(/\b(^|[^\\])_\b/g, "$1\\_"); // `1_2_3` is not considered emphasis
+      return node.value
+        .replace(/[*]/g, "\\*") // escape all `*`
+        .replace(
+          new RegExp(
+            [
+              `(^|[${punctuationCharRange}])(_+)`,
+              `(_+)([${punctuationCharRange}]|$)`
+            ].join("|"),
+            "g"
+          ),
+          (_, text1, underscore1, underscore2, text2) =>
+            (underscore1
+              ? `${text1}${underscore1}`
+              : `${underscore2}${text2}`
+            ).replace(/_/g, "\\_")
+        ); // escape all `_` except concating with non-punctuation, e.g. `1_2_3` is not considered emphasis
     case "whitespace": {
       const parentNode = path.getParentNode();
       const index = parentNode.children.indexOf(node);
@@ -109,14 +115,14 @@ function genericPrint(path, options, print) {
           prevNode.type === "sentence" &&
           prevNode.children.length > 0 &&
           prevNode.children[prevNode.children.length - 1].type === "word" &&
-          new RegExp(`[^${asciiPunctuationPattern}]$`).test(
+          new RegExp(`[^${punctuationCharRange}]$`).test(
             prevNode.children[prevNode.children.length - 1].value
           )) ||
         (nextNode &&
           nextNode.type === "sentence" &&
           nextNode.children.length > 0 &&
           nextNode.children[0].type === "word" &&
-          new RegExp(`^[^${asciiPunctuationPattern}]`).test(
+          new RegExp(`^[^${punctuationCharRange}]`).test(
             nextNode.children[0].value
           ));
       const style =
@@ -130,14 +136,8 @@ function genericPrint(path, options, print) {
     case "inlineCode": {
       const backtickCount = util.getMaxContinuousCount(node.value, "`");
       const style = backtickCount === 1 ? "``" : "`";
-      const gap = backtickCount ? printLine(path, line, options) : "";
-      return concat([
-        style,
-        gap,
-        printChildren(path, options, print),
-        gap,
-        style
-      ]);
+      const gap = backtickCount ? " " : "";
+      return concat([style, gap, node.value, gap, style]);
     }
     case "link":
       switch (options.originalText[node.position.start.offset]) {
@@ -185,9 +185,10 @@ function genericPrint(path, options, print) {
         )
       ) {
         // indented code block
+        const alignment = " ".repeat(4);
         return align(
-          4,
-          concat([" ".repeat(4), join(hardline, node.value.split("\n"))])
+          alignment,
+          concat([alignment, join(hardline, node.value.split("\n"))])
         );
       }
 
@@ -238,7 +239,10 @@ function genericPrint(path, options, print) {
                 : isGitDiffFriendlyOrderedList ? 1 : node.start + index) +
               (nthSiblingIndex % 2 === 0 ? ". " : ") ")
             : nthSiblingIndex % 2 === 0 ? "* " : "- ";
-          return concat([prefix, align(prefix.length, childPath.call(print))]);
+          return concat([
+            prefix,
+            align(" ".repeat(prefix.length), childPath.call(print))
+          ]);
         }
       });
     }
@@ -247,7 +251,7 @@ function genericPrint(path, options, print) {
         node.checked === null ? "" : node.checked ? "[x] " : "[ ] ";
       return concat([
         prefix,
-        align(prefix.length, printChildren(path, options, print))
+        align(" ".repeat(prefix.length), printChildren(path, options, print))
       ]);
     }
     case "thematicBreak": {

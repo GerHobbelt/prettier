@@ -1717,18 +1717,24 @@ function genericPrintNoParens(path, options, print, args) {
     case "JSXExpressionContainer": {
       const parent = path.getParentNode(0);
 
+      const preventInline =
+        parent.type === "JSXAttribute" &&
+        n.expression.comments &&
+        n.expression.comments.length > 0;
+
       const shouldInline =
-        n.expression.type === "ArrayExpression" ||
-        n.expression.type === "ObjectExpression" ||
-        n.expression.type === "ArrowFunctionExpression" ||
-        n.expression.type === "CallExpression" ||
-        n.expression.type === "FunctionExpression" ||
-        n.expression.type === "JSXEmptyExpression" ||
-        n.expression.type === "TemplateLiteral" ||
-        n.expression.type === "TaggedTemplateExpression" ||
-        (parent.type === "JSXElement" &&
-          (n.expression.type === "ConditionalExpression" ||
-            isBinaryish(n.expression)));
+        !preventInline &&
+        (n.expression.type === "ArrayExpression" ||
+          n.expression.type === "ObjectExpression" ||
+          n.expression.type === "ArrowFunctionExpression" ||
+          n.expression.type === "CallExpression" ||
+          n.expression.type === "FunctionExpression" ||
+          n.expression.type === "JSXEmptyExpression" ||
+          n.expression.type === "TemplateLiteral" ||
+          n.expression.type === "TaggedTemplateExpression" ||
+          (parent.type === "JSXElement" &&
+            (n.expression.type === "ConditionalExpression" ||
+              isBinaryish(n.expression))));
 
       if (shouldInline) {
         const printExpression =
@@ -3717,13 +3723,20 @@ function printMemberChain(path, options, print) {
   // The first group is the first node followed by
   //   - as many CallExpression as possible
   //       < fn()()() >.something()
+  //   - as many array acessors as possible
+  //       < fn()[0][1][2] >.something()
   //   - then, as many MemberExpression as possible but the last one
   //       < this.items >.something()
   const groups = [];
   let currentGroup = [printedNodes[0]];
   let i = 1;
   for (; i < printedNodes.length; ++i) {
-    if (printedNodes[i].node.type === "CallExpression") {
+    if (
+      printedNodes[i].node.type === "CallExpression" ||
+      (printedNodes[i].node.type === "MemberExpression" &&
+        printedNodes[i].node.computed &&
+        isNumericLiteral(printedNodes[i].node.property))
+    ) {
       currentGroup.push(printedNodes[i]);
     } else {
       break;

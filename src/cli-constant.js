@@ -1,5 +1,7 @@
 "use strict";
 
+const camelCase = require("camelcase");
+
 const CATEGORY_CONFIG = "Config";
 const CATEGORY_EDITOR = "Editor";
 const CATEGORY_FORMAT = "Format";
@@ -183,7 +185,17 @@ const detailedOptions = normalizeDetailedOptions({
     category: CATEGORY_FORMAT,
     forwardToApi: true,
     exception: value => typeof value === "string", // Allow path to a parser module.
-    choices: ["flow", "babylon", "typescript", "postcss", "json", "graphql"],
+    choices: [
+      "flow",
+      "babylon",
+      "typescript",
+      "css",
+      { value: "postcss", deprecated: true, redirect: "css" },
+      "less",
+      "scss",
+      "json",
+      "graphql"
+    ],
     description: "Which parser to use.",
     getter: (value, argv) => (argv["flow-parser"] ? "flow" : value)
   },
@@ -335,10 +347,6 @@ function dedent(str) {
   return str.replace(new RegExp(`^ {${spaces}}`, "gm"), "").trim();
 }
 
-function kebabToCamel(str) {
-  return str.replace(/-([a-z])/g, (_, char) => char.toUpperCase());
-}
-
 function normalizeDetailedOptions(rawDetailedOptions) {
   const names = Object.keys(rawDetailedOptions).sort();
 
@@ -351,7 +359,7 @@ function normalizeDetailedOptions(rawDetailedOptions) {
         option.forwardToApi &&
         (typeof option.forwardToApi === "string"
           ? option.forwardToApi
-          : kebabToCamel(name)),
+          : camelCase(name)),
       choices:
         option.choices &&
         option.choices.map(choice =>

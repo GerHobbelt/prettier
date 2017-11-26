@@ -106,7 +106,7 @@ shell.exec(
   }/index.js`
 );
 shell.exec(
-  `node_modules/babel-cli/bin/babel.js ${docs}/index.js --out-file ${
+  `babel ${docs}/index.js --out-file ${
     docs
   }/index.js --presets=es2015`
 );
@@ -116,7 +116,7 @@ shell.exec(
   "rollup -c scripts/build/rollup.docs.config.js --environment filepath:parser-babylon.js"
 );
 shell.exec(
-  `node_modules/babel-cli/bin/babel.js ${docs}/parser-babylon.js --out-file ${
+  `babel ${docs}/parser-babylon.js --out-file ${
     docs
   }/parser-babylon.js --presets=es2015`
 );

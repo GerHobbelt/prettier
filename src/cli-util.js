@@ -26,6 +26,7 @@ function getOptions(argv) {
     tabWidth: getIntOption(argv, "tab-width"),
     bracketSpacing: argv["bracket-spacing"],
     bracesSpacing: argv["braces-spacing"],
+    requirePragma: argv["require-pragma"],
     singleQuote: argv["single-quote"],
     breakProperty: argv["break-property"],
     arrowParens: argv["arrow-parens"],

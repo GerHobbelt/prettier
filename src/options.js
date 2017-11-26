@@ -47,6 +47,7 @@ const defaults = {
   alignObjectProperties: false,
   noSpaceEmptyFn: false,
   parser: "babylon",
+  requirePragma: false,
   semi: true,
   spaceBeforeFunctionParen: false,
   __log: false

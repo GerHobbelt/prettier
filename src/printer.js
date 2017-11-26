@@ -2943,8 +2943,10 @@ function printMethod(path, options, print) {
 
 function couldGroupArg(arg) {
   return (
-    (arg.type === "ObjectExpression" && arg.properties.length > 0) ||
-    (arg.type === "ArrayExpression" && arg.elements.length > 0) ||
+    (arg.type === "ObjectExpression" &&
+      (arg.properties.length > 0 || arg.comments)) ||
+    (arg.type === "ArrayExpression" &&
+      (arg.elements.length > 0 || arg.comments)) ||
     arg.type === "TSTypeAssertionExpression" ||
     arg.type === "TSAsExpression" ||
     arg.type === "FunctionExpression" ||
@@ -2962,7 +2964,8 @@ function shouldGroupLastArg(args) {
   const lastArg = util.getLast(args);
   const penultimateArg = util.getPenultimate(args);
   return (
-    (!lastArg.comments || !lastArg.comments.length) &&
+    !hasLeadingComment(lastArg) &&
+    !hasTrailingComment(lastArg) &&
     couldGroupArg(lastArg) &&
     // If the last two arguments are of the same type,
     // disable last element expansion.

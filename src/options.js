@@ -93,6 +93,7 @@ function normalize(options) {
   normalized.parser = parserBackup;
 
   // For backward compatibility. Deprecated in 0.0.10
+  /* istanbul ignore if */
   if ("useFlowParser" in normalized) {
     normalized.parser = normalized.useFlowParser ? "flow" : "babylon";
     delete normalized.useFlowParser;

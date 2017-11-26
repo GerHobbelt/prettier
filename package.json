@@ -85,6 +85,7 @@
     "test": "jest",
     "test:dist": "cross-env NODE_ENV=production yarn test",
     "test-integration": "jest tests_integration",
+    "update-snapshots": "jest --updateSnapshot",
     "lint": "cross-env EFF_NO_LINK_RULES=true eslint . --format node_modules/eslint-friendly-formatter",
     "lint-docs": "prettylint {.,docs,website}/*.md",
     "build": "node ./scripts/build/build.js",

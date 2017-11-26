@@ -330,7 +330,7 @@ $KeepTopLevelVar: val;
   @KeepLessVar: val;
   @extend %KeepPlaceholderSelector;
 
-  #{$Keep}[#{$Keep}][#{Keep}^="#{Keep-1A}"]:#{$Keep} {
+  #{$Keep}[#{$Keep}][#{Keep}^=#{Keep-1A}]:#{$Keep} {
     prop: val;
   }
 

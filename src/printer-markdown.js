@@ -40,7 +40,8 @@ const INLINE_NODE_TYPES = [
 
 const INLINE_NODE_WRAPPER_TYPES = INLINE_NODE_TYPES.concat([
   "tableCell",
-  "paragraph"
+  "paragraph",
+  "heading"
 ]);
 
 function genericPrint(path, options, print) {
@@ -99,7 +100,7 @@ function genericPrint(path, options, print) {
       const nextNode = parentNode.children[index + 1];
 
       // leading char that may cause different syntax
-      if (nextNode && /^>|^([-+*]|#{1,6})$/.test(nextNode.value)) {
+      if (nextNode && /^>|^([-+*]|#{1,6}|[0-9]+[.)])$/.test(nextNode.value)) {
         return node.value === "" ? "" : " ";
       }
 

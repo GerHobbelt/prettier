@@ -23,7 +23,8 @@ const defaults = {
   requirePragma: false,
   semi: true,
   proseWrap: true,
-  keepCallArgumentsOnLine: false
+  keepCallArgumentsOnLine: false,
+  arrowParens: "avoid"
 };
 
 const exampleConfig = Object.assign({}, defaults, {

@@ -61,6 +61,12 @@ for (const parser of parsers) {
   if (parser === "babylon") {
     continue;
   }
+  if (parser === "typescript") {
+    continue;
+  }
+  if (parser === "parse5") {
+    continue;
+  }
   shell.echo(`Bundling docs ${parser}...`);
   shell.exec(
     `rollup -c scripts/build/rollup.docs.config.js --environment filepath:parser-${
@@ -68,6 +74,31 @@ for (const parser of parsers) {
     }.js -i ${prettierPath}/parser-${parser}.js`
   );
 }
+
+shell.echo("Bundling docs typescript...");
+// TypeScript won't work correctly with rollup :(
+shell.exec(
+  `webpack --hide-modules src/parser-typescript.js ${docs}/parser-typescript.js`
+);
+shell.echo("Remove require('fs') and require('module') from source-map-support in parser-typescript");
+shell.sed(
+  "-i",
+  /require\('fs'\)/,
+  "throw new Error('fs')",
+  `${docs}/parser-typescript.js`
+);
+shell.sed(
+  "-i",
+  /require\('module'\)/,
+  "throw new Error('module')",
+  `${docs}/parser-typescript.js`
+);
+
+shell.echo("Bundling docs parse5...");
+// Parse5 won't work correctly with rollup :(
+shell.exec(
+  `webpack --hide-modules src/parser-parse5.js ${docs}/parser-parse5.js`
+);
 
 shell.echo("Copy sw-toolbox.js to docs");
 shell.cp("node_modules/sw-toolbox/sw-toolbox.js", `${docs}/sw-toolbox.js`);
@@ -79,3 +110,4 @@ shell.exec("yarn install");
 shell.exec("yarn build");
 
 shell.echo();
+

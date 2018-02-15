@@ -497,7 +497,7 @@ function genericPrintNoParens(path, options, print, args) {
         parts.push("async ");
       }
 
-      if (canPrintParamsWithoutParens(n)) {
+      if (!options.forceArrowFunctionParens && canPrintParamsWithoutParens(n)) {
         parts.push(path.call(print, "params", 0));
       } else {
         parts.push(
@@ -3048,6 +3048,8 @@ function printArgumentsList(path, options, print) {
 
       anyArgEmptyLine = true;
       parts.push(",", hardline, hardline);
+    } else if (options.keepCallArgumentsOnLine) {
+      parts.push(", ");
     } else {
       parts.push(",", line);
     }
@@ -3133,14 +3135,26 @@ function printArgumentsList(path, options, print) {
     ]);
   }
 
-  return group(
-    concat([
+  let callArgs = [];
+  if (options.keepCallArgumentsOnLine) {
+    callArgs = [
+      "(",
+      concat(printedArguments),
+      ifBreak(shouldPrintComma(options, "all") ? "," : ""),
+      ")"
+    ];
+  }
+  else {
+    callArgs = [
       "(",
       indent(concat([softline, concat(printedArguments)])),
       ifBreak(shouldPrintComma(options, "all") ? "," : ""),
       softline,
       ")"
-    ]),
+    ];
+  }
+  return group(
+    concat(callArgs),
     { shouldBreak: printedArguments.some(willBreak) || anyArgEmptyLine }
   );
 }

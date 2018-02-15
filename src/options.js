@@ -30,7 +30,7 @@ const defaults = {
 
 const trailingCommaEnum = ["none", "es5", "all"];
 
-const arrowFnParensEnum = ["avoid", "default", "always"];
+const arrowFnParensEnum = ["avoid", "callbacks", "always"];
 
 const exampleConfig = Object.assign({}, defaults, {
   filepath: "path/to/Filename",

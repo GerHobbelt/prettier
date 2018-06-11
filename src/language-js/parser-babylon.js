@@ -6,7 +6,7 @@ const locFns = require("./loc");
 
 function parse(text, parsers, opts) {
   // Inline the require to avoid loading all the JS if we don't use it
-  const babylon = require("@babel/parser");
+  const babylon = require("@gerhobbelt/babel-parser");
 
   const babylonOptions = {
     sourceType: "module",
@@ -42,12 +42,12 @@ function parse(text, parsers, opts) {
 
   let ast;
   try {
-    ast = babylon[parseMethod](text, babylonOptions);
+    ast = babylon[parseMethod](text, Object.assign({}, babylonOptions, opts && opts.parserOptions));
   } catch (originalError) {
     try {
       ast = babylon[parseMethod](
         text,
-        Object.assign({}, babylonOptions, { strictMode: false })
+        Object.assign({}, babylonOptions, opts && opts.parserOptions, { strictMode: false })
       );
     } catch (nonStrictError) {
       throw createError(

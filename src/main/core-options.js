@@ -118,6 +118,14 @@ const options = {
       { value: "vue", since: "1.10.0", description: "Vue" }
     ]
   },
+  parserOptions: {
+    since: "1.13.5",
+    category: CATEGORY_GLOBAL,
+    type: "object",
+    default: undefined,
+    description: "Optional options set to pass to the parser.",
+    exception: value => typeof value === "string" || typeof value === "object",
+  },
   plugins: {
     since: "1.10.0",
     type: "path",

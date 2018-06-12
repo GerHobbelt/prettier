@@ -290,6 +290,17 @@ Valid options:
 
 exports[`show detailed usage with --help parser (write) 1`] = `Array []`;
 
+exports[`show detailed usage with --help parser-options (stderr) 1`] = `""`;
+
+exports[`show detailed usage with --help parser-options (stdout) 1`] = `
+"--parser-options <object>
+
+  Optional options set to pass to the parser.
+"
+`;
+
+exports[`show detailed usage with --help parser-options (write) 1`] = `Array []`;
+
 exports[`show detailed usage with --help plugin (stderr) 1`] = `""`;
 
 exports[`show detailed usage with --help plugin (stdout) 1`] = `

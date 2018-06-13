@@ -1,9 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`common.yml - yaml-verify: common.yml 1`] = `
+*abc
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*abc
+
+`;
+
 exports[`common.yml 1`] = `
 *abc
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 *abc
+
+`;
+
+exports[`middle-comment.yml - yaml-verify: middle-comment.yml 1`] = `
+!!str # comment
+*123
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!!str # comment
+*123
 
 `;
 
@@ -12,6 +28,18 @@ exports[`middle-comment.yml 1`] = `
 *123
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !!str # comment
+*123
+
+`;
+
+exports[`middle-comments.yml - yaml-verify: middle-comments.yml 1`] = `
+!!str # comment 1
+# comment 2
+*123
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!!str
+# comment 1
+# comment 2
 *123
 
 `;
@@ -28,10 +56,24 @@ exports[`middle-comments.yml 1`] = `
 
 `;
 
+exports[`props.yml - yaml-verify: props.yml 1`] = `
+!!str &anchor *123
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!!str &anchor *123
+
+`;
+
 exports[`props.yml 1`] = `
 !!str &anchor *123
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !!str &anchor *123
+
+`;
+
+exports[`props-in-map.yml - yaml-verify: props-in-map.yml 1`] = `
+a: !!str &anchor *123
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+a: !!str &anchor *123
 
 `;
 

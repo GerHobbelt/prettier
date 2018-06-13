@@ -436,7 +436,7 @@ exports[`API getSupportInfo() with version 1.8.2 -> undefined 1`] = `
         \\"type\\": \\"boolean\\",
       },
       \\"cursorOffset\\": Object {
-@@ -63,16 +80,27 @@
+@@ -63,16 +80,31 @@
           \\"typescript\\",
           \\"css\\",
           \\"less\\",
@@ -452,6 +452,10 @@ exports[`API getSupportInfo() with version 1.8.2 -> undefined 1`] = `
 +       \\"default\\": undefined,
         \\"type\\": \\"choice\\",
       },
++     \\"parserOptions\\": Object {
++       \\"default\\": undefined,
++       \\"type\\": \\"object\\",
++     },
 +     \\"pluginSearchDirs\\": Object {
 +       \\"default\\": Array [],
 +       \\"type\\": \\"path\\",
@@ -465,7 +469,7 @@ exports[`API getSupportInfo() with version 1.8.2 -> undefined 1`] = `
         \\"range\\": Object {
           \\"end\\": Infinity,
           \\"start\\": 0,
-@@ -80,14 +108,15 @@
+@@ -80,14 +112,15 @@
         },
         \\"type\\": \\"int\\",
       },
@@ -790,6 +794,14 @@ exports[`CLI --support-info (stdout) 1`] = `
       \\"pluginDefaults\\": {},
       \\"since\\": \\"0.0.10\\",
       \\"type\\": \\"choice\\"
+    },
+    {
+      \\"category\\": \\"Global\\",
+      \\"description\\": \\"Optional options set to pass to the parser.\\",
+      \\"name\\": \\"parserOptions\\",
+      \\"pluginDefaults\\": {},
+      \\"since\\": \\"1.13.5\\",
+      \\"type\\": \\"object\\"
     },
     {
       \\"array\\": true,

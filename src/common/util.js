@@ -440,12 +440,13 @@ function getPreferredQuote(raw, preferredQuote) {
   const preferred = preferredQuote === "'" ? single : double;
   const alternate = preferred === single ? double : single;
 
-  let result = preferred.quote;
+  const result = preferred.quote;
 
   // If `rawContent` contains at least one of the quote preferred for enclosing
   // the string, we might want to enclose with the alternate quote instead, to
   // minimize the number of escaped quotes.
-  if (
+  // disabled for this fork
+  /*  if (
     rawContent.includes(preferred.quote) ||
     rawContent.includes(alternate.quote)
   ) {
@@ -456,7 +457,7 @@ function getPreferredQuote(raw, preferredQuote) {
       numPreferredQuotes > numAlternateQuotes
         ? alternate.quote
         : preferred.quote;
-  }
+  } */
 
   return result;
 }
@@ -535,7 +536,7 @@ function makeString(rawContent, enclosingQuote, unescapeUnnecessaryEscapes) {
     // Unescape any unnecessarily escaped character.
     // Adapted from https://github.com/eslint/eslint/blob/de0b4ad7bd820ade41b1f606008bea68683dc11a/lib/rules/no-useless-escape.js#L27
     return unescapeUnnecessaryEscapes &&
-      /^[^\\nrvtbfux\r\n\u2028\u2029"'0-7]$/.test(escaped)
+    /^[^\\nrvtbfux\r\n\u2028\u2029"'0-7]$/.test(escaped)
       ? escaped
       : "\\" + escaped;
   });

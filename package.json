@@ -1,13 +1,13 @@
 {
   "name": "prettier",
-  "version": "1.18.0-dev",
-  "description": "Prettier is an opinionated code formatter",
+  "version": "1.17.1-se.1.0.0",
+  "description": "[forked] Prettier is an opinionated code formatter",
   "bin": {
     "prettier": "./bin/prettier.js"
   },
-  "repository": "prettier/prettier",
-  "homepage": "https://prettier.io",
-  "author": "James Long",
+  "repository": "samelwitt/prettier",
+  "homepage": "https://github.com/samelwitt/prettier",
+  "author": "James Long, Sam Elwitt",
   "license": "MIT",
   "main": "./index.js",
   "engines": {

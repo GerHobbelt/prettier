@@ -40,7 +40,7 @@ module.exports = {
     oppositeDescription:
       "Do not print semicolons, except at the beginning of lines which may need them."
   },
-  singleQuote: commonOptions.singleQuote,
+  singleQuote: true,
   jsxSingleQuote: {
     since: "1.15.0",
     category: CATEGORY_JAVASCRIPT,

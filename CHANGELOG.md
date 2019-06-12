@@ -1,3 +1,9 @@
+# 1.17.1-se.1.0.1
+
+**js:** Make single-quotes default.
+
+**common:** Default to 120-character max line length.
+
 # 1.17.1-se.1.0.0
 
 **js:** Enforce single-quotes regardless of escapes needed.

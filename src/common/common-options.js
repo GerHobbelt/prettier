@@ -16,7 +16,7 @@ module.exports = {
     since: "0.0.0",
     category: CATEGORY_COMMON,
     type: "boolean",
-    default: false,
+    default: true,
     description: "Use single quotes instead of double quotes."
   },
   proseWrap: {

@@ -1,6 +1,6 @@
 {
   "name": "prettier",
-  "version": "1.17.1-se.1.0.1",
+  "version": "1.17.1-se.1.0.3",
   "description": "[forked] Prettier is an opinionated code formatter",
   "bin": {
     "prettier": "./bin/prettier.js"

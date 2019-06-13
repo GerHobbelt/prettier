@@ -195,7 +195,7 @@ const options = {
     since: "0.0.0",
     category: CATEGORY_GLOBAL,
     type: "int",
-    default: 80,
+    default: 120,
     description: "The line length where Prettier will try wrap.",
     range: { start: 0, end: Infinity, step: 1 }
   },

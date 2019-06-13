@@ -1,3 +1,7 @@
+# 1.17.1-se.1.0.3
+
+**common:** hard-code config
+
 # 1.17.1-se.1.0.1
 
 **js:** Make single-quotes default.

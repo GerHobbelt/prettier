@@ -24,7 +24,7 @@ const getExplorerMemoized = mem(opts => {
         if (typeof result.config !== "object") {
           throw new Error(
             `Config is only allowed to be an object, ` +
-              `but received ${typeof result.config} in "${result.filepath}"`
+            `but received ${typeof result.config} in "${result.filepath}"`
           );
         }
 
@@ -65,16 +65,17 @@ function getLoadFunction(opts) {
 }
 
 function _resolveConfig(filePath, opts, sync) {
+  // console.log(filePath)
   opts = Object.assign({ useCache: true }, opts);
   const loadOpts = {
     cache: !!opts.useCache,
-    sync: !!sync,
+    sync: true,
     editorconfig: !!opts.editorconfig
   };
   const load = getLoadFunction(loadOpts);
   const loadEditorConfig = resolveEditorConfig.getLoadFunction(loadOpts);
   const arr = [load, loadEditorConfig].map(l => l(filePath, opts.config));
-
+  arr[0] = Object.assign({}, arr[0], { config: { singleQuote: true, printWidth: 120 } });
   const unwrapAndMerge = arr => {
     const result = arr[0];
     const editorConfigured = arr[1];
@@ -102,6 +103,7 @@ function _resolveConfig(filePath, opts, sync) {
   };
 
   if (loadOpts.sync) {
+    console.log(unwrapAndMerge(arr));
     return unwrapAndMerge(arr);
   }
 
@@ -158,7 +160,7 @@ function mergeOverrides(configResult, filePath) {
 function pathMatchesGlobs(filePath, patterns, excludedPatterns) {
   const patternList = [].concat(patterns);
   const excludedPatternList = [].concat(excludedPatterns || []);
-  const opts = { matchBase: true };
+  const opts = { matchBase: true, dot: true };
 
   return (
     patternList.some(pattern => minimatch(filePath, pattern, opts)) &&

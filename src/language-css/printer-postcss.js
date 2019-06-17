@@ -1,6 +1,7 @@
 "use strict";
 
 const clean = require("./clean");
+const { insertPragma } = require("./pragma");
 const {
   printNumber,
   printString,
@@ -832,7 +833,8 @@ function printNodeSequence(path, options, print) {
             options.originalText,
             options.locStart(node.nodes[i + 1]),
             { backwards: true }
-          )) ||
+          ) &&
+          node.nodes[i].type !== "front-matter") ||
         (node.nodes[i + 1].type === "css-atrule" &&
           node.nodes[i + 1].name === "else" &&
           node.nodes[i].type !== "css-comment")
@@ -841,7 +843,12 @@ function printNodeSequence(path, options, print) {
       } else {
         parts.push(hardline);
         if (
-          isNextLineEmpty(options.originalText, pathChild.getValue(), options)
+          isNextLineEmpty(
+            options.originalText,
+            pathChild.getValue(),
+            options
+          ) &&
+          node.nodes[i].type !== "front-matter"
         ) {
           parts.push(hardline);
         }
@@ -899,6 +906,7 @@ function printCssNumber(rawNumber) {
 
 module.exports = {
   print: genericPrint,
+  insertPragma,
   hasPrettierIgnore: hasIgnoreComment,
   massageAstNode: clean
 };

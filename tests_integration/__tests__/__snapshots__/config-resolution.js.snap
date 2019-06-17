@@ -3,7 +3,27 @@
 exports[`CLI overrides take precedence (stderr) 1`] = `""`;
 
 exports[`CLI overrides take precedence (stdout) 1`] = `
-"console.log(
+"function f() {
+	console.log(
+		\\"should have tab width 8\\"
+	)
+}
+function f() {
+  console.log(
+    \\"should have space width 2\\"
+  )
+}
+function f() {
+        console.log(
+                \\"should have space width 8\\"
+        )
+}
+function f() {
+  console.log(
+    \\"should have space width 2 despite ../.editorconfig specifying 8, because ./.hg is present\\"
+  )
+}
+console.log(
   \\"jest/__best-tests__/file.js should have semi\\"
 );
 console.log(
@@ -14,7 +34,7 @@ console.log(
 );
 function js() {
         console.log(
-                \\"js/file.js should have tab width 8\\"
+                \\"js/file.js should have tab width 8 (1 if CLI)\\"
         );
 }
 \\"use strict\\";
@@ -61,7 +81,7 @@ exports[`accepts configuration from --config (stderr) 1`] = `""`;
 
 exports[`accepts configuration from --config (stdout) 1`] = `
 "function js() {
-  console.log(\\"js/file.js should have tab width 8\\")
+ console.log(\\"js/file.js should have tab width 8 (1 if CLI)\\")
 }
 "
 `;
@@ -84,11 +104,25 @@ exports[`resolves configuration file with --find-config-path file (write) 1`] = 
 exports[`resolves configuration from external files (stderr) 1`] = `""`;
 
 exports[`resolves configuration from external files (stdout) 1`] = `
-"console.log(\\"jest/__best-tests__/file.js should have semi\\");
+"function f() {
+	console.log(\\"should have tab width 8\\")
+}
+function f() {
+  console.log(\\"should have space width 2\\")
+}
+function f() {
+        console.log(\\"should have space width 8\\")
+}
+function f() {
+  console.log(
+    \\"should have space width 2 despite ../.editorconfig specifying 8, because ./.hg is present\\"
+  )
+}
+console.log(\\"jest/__best-tests__/file.js should have semi\\");
 console.log(\\"jest/Component.js should not have semi\\")
 console.log(\\"jest/Component.test.js should have semi\\");
 function js() {
-        console.log(\\"js/file.js should have tab width 8\\");
+        console.log(\\"js/file.js should have tab width 8 (1 if CLI)\\");
 }
 \\"use strict\\";
 

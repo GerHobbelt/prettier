@@ -1,146 +1,78 @@
-#!/usr/bin/env node
-
 "use strict";
 
-const path = require("path");
-const pkg = require("../../package.json");
-const formatMarkdown = require("../../website/static/markdown");
-const shell = require("shelljs");
+const chalk = require("chalk");
+const stringWidth = require("string-width");
+const bundler = require("./bundler");
+const bundleConfigs = require("./config");
+const util = require("./util");
 
-const rootDir = path.join(__dirname, "..", "..");
-const parsers = [
-  "babylon",
-  "flow",
-  "typescript",
-  "graphql",
-  "postcss",
-  "parse5",
-  "markdown"
-];
+// Errors in promises should be fatal.
+const loggedErrors = new Set();
+process.on("unhandledRejection", err => {
+  // No need to print it twice.
+  if (!loggedErrors.has(err)) {
+    console.error(err);
+  }
+  process.exit(1);
+});
 
-process.env.PATH += path.delimiter + path.join(rootDir, "node_modules", ".bin");
+const OK = chalk.reset.inverse.bold.green(" DONE ");
+const FAIL = chalk.reset.inverse.bold.red(" FAIL ");
 
-function pipe(string) {
-  return new shell.ShellString(string);
+function fitTerminal(input) {
+  const columns = Math.min(process.stdout.columns, 80);
+  const WIDTH = columns - stringWidth(OK) + 1;
+  if (input.length < WIDTH) {
+    input += Array(WIDTH - input.length).join(chalk.dim("."));
+  }
+  return input;
 }
 
-shell.set("-e");
-shell.cd(rootDir);
+async function createBundle(bundleConfig) {
+  const { output } = bundleConfig;
+  process.stdout.write(fitTerminal(output));
 
-shell.rm("-Rf", "dist/");
-
-// --- Lib ---
-
-shell.echo("Bundling lib index...");
-shell.exec("rollup -c scripts/build/rollup.index.config.js");
-
-shell.echo("Bundling lib bin...");
-shell.exec("rollup -c scripts/build/rollup.bin.config.js");
-shell.chmod("+x", "./dist/bin/prettier.js");
-
-shell.echo("Bundling lib third-party...");
-shell.exec("rollup -c scripts/build/rollup.third-party.config.js");
-
-for (const parser of parsers) {
-  if (parser === "postcss") {
-    continue;
+  try {
+    await bundler(bundleConfig, output);
+  } catch (error) {
+    process.stdout.write(`${FAIL}\n\n`);
+    handleError(error);
   }
-  if (parser === "flow") {
-    continue;
-  }
-  if (parser === "typescript") {
-    continue;
-  }
-  shell.echo(`Bundling lib ${parser}...`);
-  shell.exec(
-    `rollup -c scripts/build/rollup.parser.config.js --environment parser:${
-      parser
-    }`
-  );
+
+  process.stdout.write(`${OK}\n`);
 }
 
-shell.echo("Bundling lib flow...");
-// Flow won't work correctly with rollup :(
-shell.exec(
-  "webpack --hide-modules src/parser-flow.js dist/parser-flow.js"
-);
+function handleError(error) {
+  loggedErrors.add(error);
+  console.error(error);
+  throw error;
+}
 
-shell.echo("Bundling lib typescript...");
-// TypeScript won't work correctly with rollup :(
-shell.exec(
-  "webpack --hide-modules src/parser-typescript.js dist/parser-typescript.js"
-);
-shell.echo("Remove require('fs') and require('module') from source-map-support in parser-typescript");
-shell.sed(
-  "-i",
-  /require\('fs'\)/,
-  "throw new Error('fs')",
-  "dist/parser-typescript.js"
-);
-shell.sed(
-  "-i",
-  /require\('module'\)/,
-  "throw new Error('module')",
-  "dist/parser-typescript.js"
-);
+async function preparePackage() {
+  const pkg = await util.readJson("package.json");
+  pkg.bin = "./bin-prettier.js";
+  pkg.engines.node = ">=4";
+  delete pkg.dependencies;
+  delete pkg.devDependencies;
+  pkg.scripts = {
+    prepublishOnly:
+      "node -e \"assert.equal(require('.').version, require('..').version)\""
+  };
+  pkg.files = ["*.js"];
+  await util.writeJson("dist/package.json", pkg);
 
-shell.echo("Bundling lib postcss...");
-// PostCSS has dependency cycles and won't work correctly with rollup :(
-shell.exec(
-  "webpack --hide-modules src/parser-postcss.js dist/parser-postcss.js"
-);
-// Prepend module.exports =
-const content = shell.cat("dist/parser-postcss.js").stdout;
-pipe(`module.exports = ${content}`).to("dist/parser-postcss.js");
+  await util.copyFile("./README.md", "./dist/README.md");
+}
 
-shell.echo();
+async function run() {
+  await util.asyncRimRaf("dist");
 
-// --- Misc ---
+  console.log(chalk.inverse(" Building packages "));
+  for (const bundleConfig of bundleConfigs) {
+    await createBundle(bundleConfig);
+  }
 
-shell.echo("Remove eval");
-shell.sed(
-  "-i",
-  /eval\("require"\)/,
-  "require",
-  "dist/index.js",
-  "dist/bin/prettier.js"
-);
+  await preparePackage();
+}
 
-shell.echo("Update ISSUE_TEMPLATE.md");
-const issueTemplate = shell.cat(".github/ISSUE_TEMPLATE.md").stdout;
-const newIssueTemplate = issueTemplate.replace(
-  /-->[^]*$/,
-  "-->\n\n" +
-    formatMarkdown(
-      "// code snippet",
-      "// code snippet",
-      "",
-      pkg.version,
-      "https://prettier.io/playground/#.....",
-      { parser: "babylon" },
-      [["# Options (if any):", true], ["--single-quote", true]],
-      true
-    )
-);
-pipe(newIssueTemplate).to(".github/ISSUE_TEMPLATE.md");
-
-shell.echo("Copy package.json");
-const pkgWithoutDependencies = Object.assign({}, pkg);
-delete pkgWithoutDependencies.dependencies;
-pkgWithoutDependencies.scripts = {
-  prepublishOnly:
-    "node -e \"assert.equal(require('.').version, require('..').version)\""
-};
-pipe(JSON.stringify(pkgWithoutDependencies, null, 2)).to("dist/package.json");
-
-shell.echo("Copy README.md");
-shell.cp("README.md", "dist/README.md");
-
-shell.echo("Done!");
-shell.echo();
-shell.echo("How to test against dist:");
-shell.echo("  1) yarn test:dist");
-shell.echo();
-shell.echo("How to publish:");
-shell.echo("  1) IMPORTANT!!! Go to dist/");
-shell.echo("  2) npm publish");
+run();

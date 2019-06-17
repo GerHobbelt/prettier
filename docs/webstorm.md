@@ -1,50 +1,56 @@
 ---
 id: webstorm
-title: Webstorm Setup
+title: WebStorm Setup
 ---
 
-## Configure External Tool
+## WebStorm 2018.1 and above
 
-https://blog.jetbrains.com/webstorm/2016/08/using-external-tools/
+Use the `Reformat with Prettier` action (`Alt-Shift-Cmd-P` on macOS or `Alt-Shift-Ctrl-P` on Windows and Linux) to format the selected code, a file, or a whole directory.
 
-Go to _File | Settings | Tools | External Tools_ for Windows and Linux or _WebStorm | Preferences | Tools | External Tools_ for OS X and click **+** to add a new tool. Let’s name it **Prettier**.
+Don't forget to install `prettier` first.
 
-* **Program** set `prettier`
+To use Prettier in IntelliJ IDEA, PhpStorm, PyCharm, and other JetBrains IDEs, please install this [plugin](https://plugins.jetbrains.com/plugin/10456-prettier).
 
-> If on the other hand you have `prettier` installed locally, replace the **Program** with `$ProjectFileDir$/node_modules/.bin/prettier` (on OS X and Linux) or `$ProjectFileDir$\node_modules\.bin\prettier.cmd` (on Windows).
+For older IDE versions, please follow the instructions below.
 
-* **Parameters** set `--write [other opts] $FilePathRelativeToProjectRoot$`
-* **Working directory** set `$ProjectFileDir$`
+## Running Prettier on save using File Watcher
 
-![Example](/docs/assets/webstorm/with-prettier.png)
+To automatically format your files using `prettier` on save, you can use a file watcher.
 
-### Process directories
+Go to _Preferences | Tools | File Watchers_ and click **+** to add a new watcher. Let’s name it **Prettier**.
 
-* Clone the External tool created above and name it `Prettier Directories`
-* **Parameters** set `--write [other opts] $FileDirRelativeToProjectRoot$/**/{*.js,*.jsx}`
+- **File Type**: _JavaScript_ (or _Any_ if you want to run `prettier` on all files)
+- **Scope**: _Project Files_
+- **Program**: full path to `.bin/prettier` or `.bin\prettier.cmd` in the project's `node_module` folder. Or, if Prettier is installed globally, select `prettier` on macOS and Linux or `C:\Users\user_name\AppData\Roaming\npm\prettier.cmd` on Windows (or whatever `npm prefix -g` returns).
+- **Arguments**: `--write [other options] $FilePathRelativeToProjectRoot$`
+- **Output paths to refresh**: `$FilePathRelativeToProjectRoot$`
+- **Working directory**: `$ProjectFileDir$`
+- **Auto-save edited files to trigger the watcher**: Uncheck to reformat on Save only.
 
-## Usage
+![Example](/docs/assets/webstorm/file-watcher-prettier.png)
 
-* Cmd-Shift-A on OS X or Ctrl+Shift+A on Windows and Linux
-* Type: 'prettier' and hit enter
+## WebStorm 2017.3 or earlier
 
-### Configure Keymap
+### Using Prettier with ESLint
 
-Now when you setup **External Tool** I guess you want to add hotkey for it. Go to _File | Settings | Keymap_ for Windows and Linux _WebStorm | Preferences | Keymap_ and type external tool name in search box.
+If you are using ESLint with [eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier), use the `Fix ESLint Problems` action to reformat the currect file – find it using _Find Action_ (`Cmd/Ctrl-Shift-A`) or [add a keyboard shortcut](https://www.jetbrains.com/help/webstorm/configuring-keyboard-shortcuts.html) to it in _Preferences | Kymap_ and then use it.
 
-See [this documentation](https://www.jetbrains.com/help/webstorm/configuring-keyboard-shortcuts.html) about configuring keyboard shortcuts.
+Make sure that the ESLint integration is enabled in _Preferences | Languages & Frameworks | JavaScript | Code Quality Tools | ESLint_.
 
-## Using File Watcher
+### Using Prettier as External Tool
 
-To automatically format using `prettier` on save, you can use a file watcher.
+Go to _Preferences | Tools | External Tools_ and click **+** to add a new tool. Let’s name it **Prettier**.
 
-Go to _File | Settings | Tools | File Watchers_ for Windows and Linux or _WebStorm | Preferences | Tools | File Watchers_ for OS X and click **+** to add a new tool. Let’s name it **Prettier**.
+- **Program**: `prettier` on macOS and Linux or `C:\Users\user_name\AppData\Roaming\npm\prettier.cmd` on Windows (or whatever `npm prefix -g` returns), if Prettier is installed globally
+- **Parameters**: `--write [other options] $FilePathRelativeToProjectRoot$`
+- **Working directory**: `$ProjectFileDir$`
 
-* **File Type**: JavaScript
-* **Scope**: Current File
-* **Program** set the full path to a `prettier` executable, such as `/Users/developer/repo/jest/node_modules/.bin/prettier` (on OS X and Linux) or `C:/\Users\developer\repo\jest\node_modules\.bin\prettier.cmd` (on Windows).
-* **Arguments** set `--write [other opts] $FilePath$`
-* **Working directory** set `$ProjectFileDir$`
-* **Immediate file synchronization**: Uncheck to reformat on Save only (otherwise code will jump around while you type).
+> If Prettier is installed locally in your project, replace the path in **Program** with `$ProjectFileDir$/node_modules/.bin/prettier` on macOS and Linux or `$ProjectFileDir$\node_modules\.bin\prettier.cmd` on Windows.
 
-![Example](/docs/assets/webstorm/prettier-file-watcher.png)
+![Example](/docs/assets/webstorm/external-tool-prettier.png)
+
+Press `Cmd/Ctrl-Shift-A` (_Find Action_), search for _Prettier_, and then hit `Enter`.
+
+It will run `prettier` for the current file.
+
+You can [add a keyboard shortcut](https://www.jetbrains.com/help/webstorm/configuring-keyboard-shortcuts.html) to run this External tool configuration in _Preferences | Keymap_.

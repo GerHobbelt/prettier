@@ -3,7 +3,7 @@
 const path = require("path");
 
 const runPrettier = require("../runPrettier");
-const prettier = require("../../tests_config/require_prettier");
+const prettier = require("prettier/local");
 
 expect.addSnapshotSerializer(require("../path-serializer"));
 
@@ -100,6 +100,103 @@ test("API resolveConfig.sync with file arg and extension override", () => {
   expect(prettier.resolveConfig.sync(file)).toMatchObject({
     semi: true
   });
+});
+
+test("API resolveConfig with file arg and .editorconfig", () => {
+  const file = path.resolve(
+    path.join(__dirname, "../cli/config/editorconfig/file.js")
+  );
+  return prettier.resolveConfig(file, { editorconfig: true }).then(result => {
+    expect(result).toMatchObject({
+      useTabs: true,
+      tabWidth: 8,
+      printWidth: 100
+    });
+  });
+});
+
+test("API resolveConfig.sync with file arg and .editorconfig", () => {
+  const file = path.resolve(
+    path.join(__dirname, "../cli/config/editorconfig/file.js")
+  );
+
+  expect(prettier.resolveConfig.sync(file)).toMatchObject({
+    semi: false
+  });
+
+  expect(
+    prettier.resolveConfig.sync(file, { editorconfig: true })
+  ).toMatchObject({
+    useTabs: true,
+    tabWidth: 8,
+    printWidth: 100
+  });
+});
+
+test("API resolveConfig with nested file arg and .editorconfig", () => {
+  const file = path.resolve(
+    path.join(__dirname, "../cli/config/editorconfig/lib/file.js")
+  );
+  return prettier.resolveConfig(file, { editorconfig: true }).then(result => {
+    expect(result).toMatchObject({
+      useTabs: false,
+      tabWidth: 2,
+      printWidth: 100
+    });
+  });
+});
+
+test("API resolveConfig.sync with nested file arg and .editorconfig", () => {
+  const file = path.resolve(
+    path.join(__dirname, "../cli/config/editorconfig/lib/file.js")
+  );
+
+  expect(prettier.resolveConfig.sync(file)).toMatchObject({
+    semi: false
+  });
+
+  expect(
+    prettier.resolveConfig.sync(file, { editorconfig: true })
+  ).toMatchObject({
+    useTabs: false,
+    tabWidth: 2,
+    printWidth: 100
+  });
+});
+
+test("API resolveConfig with nested file arg and .editorconfig and indent_size = tab", () => {
+  const file = path.resolve(
+    path.join(__dirname, "../cli/config/editorconfig/lib/indent_size=tab.js")
+  );
+  return prettier.resolveConfig(file, { editorconfig: true }).then(result => {
+    expect(result).toMatchObject({
+      useTabs: false,
+      tabWidth: 8,
+      printWidth: 100
+    });
+  });
+});
+
+test("API resolveConfig.sync with nested file arg and .editorconfig and indent_size = tab", () => {
+  const file = path.resolve(
+    path.join(__dirname, "../cli/config/editorconfig/lib/indent_size=tab.js")
+  );
+
+  expect(prettier.resolveConfig.sync(file)).toMatchObject({
+    semi: false
+  });
+
+  expect(
+    prettier.resolveConfig.sync(file, { editorconfig: true })
+  ).toMatchObject({
+    useTabs: false,
+    tabWidth: 8,
+    printWidth: 100
+  });
+});
+
+test("API clearConfigCache", () => {
+  expect(() => prettier.clearConfigCache()).not.toThrowError();
 });
 
 test("API resolveConfig.sync overrides work with absolute paths", () => {

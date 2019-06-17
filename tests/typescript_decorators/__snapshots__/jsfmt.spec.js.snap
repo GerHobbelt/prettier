@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`decorator-type-assertion.ts 1`] = `
+exports[`decorator-type-assertion.ts - typescript-verify: decorator-type-assertion.ts 1`] = `
 @(bind as ClassDecorator)
 class Decorated {
 
@@ -19,7 +19,7 @@ class Decorated {}
 
 `;
 
-exports[`decorators.js 1`] = `
+exports[`decorators.js - typescript-verify: decorators.js 1`] = `
 export class TestTextFileService {
 	constructor(
 		@ILifecycleService lifecycleService,
@@ -54,7 +54,7 @@ class AngularComponent {
 
 `;
 
-exports[`decorators-comments.js 1`] = `
+exports[`decorators-comments.js - typescript-verify: decorators-comments.js 1`] = `
 
 class Foo1 {
     @foo
@@ -80,6 +80,23 @@ class Foo4 {
     async *method() {}
 }
 
+class Something {
+    @foo()
+    // comment
+    readonly property: Array<string>
+}
+
+class Something {
+    @foo()
+    // comment
+    abstract property: Array<string>
+}
+
+class Something {
+    @foo()
+    // comment
+    abstract method(): Array<string>
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class Foo1 {
   @foo
@@ -105,9 +122,27 @@ class Foo4 {
   async *method() {}
 }
 
+class Something {
+  @foo()
+  // comment
+  readonly property: Array<string>;
+}
+
+class Something {
+  @foo()
+  // comment
+  abstract property: Array<string>;
+}
+
+class Something {
+  @foo()
+  // comment
+  abstract method(): Array<string>;
+}
+
 `;
 
-exports[`inline-decorators.ts 1`] = `
+exports[`inline-decorators.ts - typescript-verify: inline-decorators.ts 1`] = `
 
 @d1
 @d2(foo)
@@ -209,6 +244,23 @@ class Bar {
 class MyContainerComponent {
   @ContentChildren(MyComponent)
   components: QueryListSomeBigName<MyComponentThat>;
+}
+
+`;
+
+exports[`interface.ts - typescript-verify: interface.ts 1`] = `
+// invalid place but shouldn't be removed
+
+@hello()
+interface MyInterface {
+  id: string;
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// invalid place but shouldn't be removed
+
+@hello()
+interface MyInterface {
+  id: string;
 }
 
 `;

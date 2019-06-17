@@ -1,68 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`arrow.js 1`] = `
+exports[`arrow.js - flow-verify: arrow.js 1`] = `
 // Error
-const beep = (data/*: Object*/) => {}
+const beep = (data/*: Object */) => {}
 
 // OK
-const beep = (data/*: Object*/, secondData/*: Object*/) => {}
+const beep = (data/*: Object */, secondData/*: Object */) => {}
+
+const beep = (data/*: /* this is an object *-/ Object */) => {};
+
+const run = (cmd /*: string */) /*: Promise<void> */ => {}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Error
-const beep = (data: Object) => {};
+const beep = (data /*: Object */) => {};
 
 // OK
-const beep = (data: Object, secondData: Object) => {};
+const beep = (data /*: Object */, secondData /*: Object */) => {};
+
+const beep = (data /*: /* this is an object *-/ Object */) => {};
+
+const run = (cmd /*: string */) /*: Promise<void> */ => {};
 
 `;
 
-exports[`arrow.js 2`] = `
-// Error
-const beep = (data/*: Object*/) => {}
+exports[`class.js - flow-verify: class.js 1`] = `
+class A {
+  x /*: string */;
 
-// OK
-const beep = (data/*: Object*/, secondData/*: Object*/) => {}
+  method(a /*: T */, b /*: T */) /*: T */ {}
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Error
-const beep = (data /*: Object*/) => {};
+class A {
+  x /*: string */;
 
-// OK
-const beep = (data /*: Object*/, secondData /*: Object*/) => {};
+  method(a /*: T */, b /*: T */) /*: T */ {}
+}
 
 `;
 
-exports[`object_type_annotation.js 1`] = `
-type Props = // (DispatchProps & StateProps); WHY DON'T YOU WORK FLOW!!!!!!!!!
-{
-  isPlaying: boolean,
-};
-
-type Props = { // (DispatchProps & StateProps); WHY DON'T YOU WORK FLOW!!!!!!!!!
-  isPlaying: boolean
-};
-
-type Props = {
-  // (DispatchProps & StateProps); WHY DON'T YOU WORK FLOW!!!!!!!!!
-  isPlaying: boolean
-};
+exports[`functions.js - flow-verify: functions.js 1`] = `
+function foo<T>(bar  /*: T[] */, baz  /*: T */) /*: S */ {}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// (DispatchProps & StateProps); WHY DON'T YOU WORK FLOW!!!!!!!!!
-type Props = {
-  isPlaying: boolean
-};
-
-type Props = {
-  // (DispatchProps & StateProps); WHY DON'T YOU WORK FLOW!!!!!!!!!
-  isPlaying: boolean
-};
-
-type Props = {
-  // (DispatchProps & StateProps); WHY DON'T YOU WORK FLOW!!!!!!!!!
-  isPlaying: boolean
-};
+function foo<T>(bar /*: T[] */, baz /*: T */) /*: S */ {}
 
 `;
 
-exports[`object_type_annotation.js 2`] = `
+exports[`let.js - flow-verify: let.js 1`] = `
+let foo /*: Groups<T> */;
+let foo /*: string */ = 'a';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+let foo /*: Groups<T> */;
+let foo /*: string */ = "a";
+
+`;
+
+exports[`object_type_annotation.js - flow-verify: object_type_annotation.js 1`] = `
 type Props = // (DispatchProps & StateProps); WHY DON'T YOU WORK FLOW!!!!!!!!!
 {
   isPlaying: boolean,

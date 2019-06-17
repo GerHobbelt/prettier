@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`constructors.js 1`] = `
+exports[`constructors.js - flow-verify: constructors.js 1`] = `
 // Foo is a class-like function
 function Foo() {
   this.x = 0; // constructs objects with property x
@@ -19,7 +19,6 @@ interface IFooPrototype {
 interface IFoo extends IFooPrototype {
   x: boolean; // error, should have declared x: number instead
   static (): void;
-  static y: boolean; // error, should have declared static y: number instead
   constructor(): void;
 }
 exports.Foo2 = (Foo: Class<IFoo>);
@@ -45,15 +44,14 @@ interface IFooPrototype {
 }
 interface IFoo extends IFooPrototype {
   x: boolean; // error, should have declared x: number instead
-  static (): void;
-  static y: boolean; // error, should have declared static y: number instead
+  static(): void;
   constructor(): void;
 }
 exports.Foo2 = (Foo: Class<IFoo>);
 
 `;
 
-exports[`test.js 1`] = `
+exports[`test.js - flow-verify: test.js 1`] = `
 var Foo = require('./constructors').Foo;
 var x: string = new Foo().x; // error, found number instead of string
 var y: string = Foo.y; // error, found number instead of string

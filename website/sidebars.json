@@ -5,15 +5,18 @@
       "why-prettier",
       "comparison",
       "language-support",
+      "option-philosophy",
       "rationale"
     ],
     "Usage": [
       "install",
       "cli",
+      "api",
+      "browser",
+      "plugins",
       "precommit",
       "watching-files",
       "eslint",
-      "api",
       "ignore"
     ],
     "Configuring Prettier": [

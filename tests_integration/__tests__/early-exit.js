@@ -1,8 +1,7 @@
 "use strict";
 
-const prettier = require("../../tests_config/require_prettier");
+const prettier = require("prettier/local");
 const runPrettier = require("../runPrettier");
-const constant = require("../../src/cli-constant");
 
 describe("show version with --version", () => {
   runPrettier("cli/with-shebang", ["--version"]).test({
@@ -23,18 +22,25 @@ describe(`show detailed usage with --help l (alias)`, () => {
   });
 });
 
-constant.detailedOptions.forEach(option => {
-  const optionNames = [
-    option.description ? option.name : null,
-    option.oppositeDescription ? `no-${option.name}` : null
-  ].filter(Boolean);
+describe(`show detailed usage with plugin options (automatic resolution)`, () => {
+  runPrettier("plugins/automatic", [
+    "--help",
+    "tab-width",
+    "--parser=bar",
+    `--plugin-search-dir=.`
+  ]).test({
+    status: 0
+  });
+});
 
-  optionNames.forEach(optionName => {
-    describe(`show detailed usage with --help ${optionName}`, () => {
-      runPrettier("cli", ["--help", optionName]).test({
-        status: 0
-      });
-    });
+describe(`show detailed usage with plugin options (manual resolution)`, () => {
+  runPrettier("cli", [
+    "--help",
+    "tab-width",
+    "--plugin=../plugins/automatic/node_modules/prettier-plugin-bar",
+    "--parser=bar"
+  ]).test({
+    status: 0
   });
 });
 
@@ -58,6 +64,12 @@ describe("throw error with --write + --debug-check", () => {
 
 describe("throw error with --find-config-path + multiple files", () => {
   runPrettier("cli", ["--find-config-path", "abc.js", "def.js"]).test({
+    status: 1
+  });
+});
+
+describe("throw error with --file-info + multiple files", () => {
+  runPrettier("cli", ["--file-info", "abc.js", "def.js"]).test({
     status: 1
   });
 });

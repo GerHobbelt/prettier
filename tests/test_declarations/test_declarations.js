@@ -8,6 +8,14 @@ it("does something really long and complicated so I have to write a very long na
   console.log("hello!");
 });
 
+it("does something really long and complicated so I have to write a very long name for the test", function(done) {
+  console.log("hello!");
+});
+
+it("does something really long and complicated so I have to write a very long name for the test", function myAssertions(done) {
+  console.log("hello!");
+});
+
 it(`does something really long and complicated so I have to write a very long name for the test`, function() {
   console.log("hello!");
 });
@@ -81,6 +89,10 @@ ftest("does something really long and complicated so I have to write a very long
 
 xtest("does something really long and complicated so I have to write a very long name for the describe block", () => {});
 
+skip(`does something really long and complicated so I have to write a very long name for the test`, () => {});
+
+skip("does something really long and complicated so I have to write a very long name for the test", () => {});
+
 // Should break
 
 it.only("does something really long and complicated so I have to write a very long name for the test", 10, () => {
@@ -94,3 +106,5 @@ it.only.only("does something really long and complicated so I have to write a ve
 it.only.only("does something really long and complicated so I have to write a very long name for the test", (a, b, c) => {
   console.log("hello!");
 });
+
+xskip("does something really long and complicated so I have to write a very long name for the test", () => {});

@@ -5,14 +5,15 @@ title: What is Prettier?
 
 Prettier is an opinionated code formatter with support for:
 
-* JavaScript, including [ES2017](https://github.com/tc39/proposals/blob/master/finished-proposals.md)
-* [JSX](https://facebook.github.io/jsx/)
-* [Flow](https://flow.org/)
-* [TypeScript](https://www.typescriptlang.org/)
-* CSS, [Less](http://lesscss.org/), and [SCSS](http://sass-lang.com)
-* [JSON](http://json.org/)
-* [GraphQL](http://graphql.org/)
-* [Markdown](http://commonmark.org/), including [GFM](https://github.github.com/gfm/)
+- JavaScript, including [ES2017](https://github.com/tc39/proposals/blob/master/finished-proposals.md)
+- [JSX](https://facebook.github.io/jsx/)
+- [Flow](https://flow.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- CSS, [Less](http://lesscss.org/), and [SCSS](http://sass-lang.com)
+- [JSON](http://json.org/)
+- [GraphQL](http://graphql.org/)
+- [Markdown](http://commonmark.org/), including [GFM](https://github.github.com/gfm/)
+- [YAML](http://yaml.org/)
 
 It removes all original styling[\*](#footnotes) and ensures that all outputted code conforms to a consistent style. (See this [blog post](http://jlongster.com/A-Prettier-Formatter))
 
@@ -46,13 +47,10 @@ Prettier enforces a consistent code **style** (i.e. code formatting that won't a
 
 If you want to learn more, these two conference talks are great introductions:
 
-[![](https://cloud.githubusercontent.com/assets/197597/24886367/dda8a6f0-1e08-11e7-865b-22492450f10f.png)](https://www.youtube.com/watch?v=hkfBvpEfWdA)
+[![A Prettier Printer by James Long on React Conf 2017](/docs/assets/youtube-cover/a-prettier-printer-by-james-long-on-react-conf-2017.png)](https://www.youtube.com/watch?v=hkfBvpEfWdA)
 
-[![](https://cloud.githubusercontent.com/assets/197597/24886368/ddacd6f8-1e08-11e7-806a-9febd23cbf47.png)](https://www.youtube.com/watch?v=0Q4kUNx85_4")
+[![JavaScript Code Formatting by Christopher Chedeau on React London 2017](/docs/assets/youtube-cover/javascript-code-formatting-by-christopher-chedeau-on-react-london-2017.png)](https://www.youtube.com/watch?v=0Q4kUNx85_4)
 
 #### Footnotes
 
-\* _Well actually, some original styling is preserved when practical—see [empty lines] and [multi-line objects]._
-
-[empty lines]: rationale.html#empty-lines
-[multi-line objects]: rationale.html#multi-line-objects
+\* _Well actually, some original styling is preserved when practical—see [empty lines](rationale.md#empty-lines) and [multi-line objects](rationale.md#multi-line-objects)._

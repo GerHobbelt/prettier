@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`fragment.js 1`] = `
+exports[`fragment.js - flow-verify: fragment.js 1`] = `
 <></>;
 
 <>
@@ -32,6 +32,11 @@ exports[`fragment.js 1`] = `
     </>
   </>
 </div>;
+
+foo = (
+  // comment
+  <></>
+);
 
 </* open fragment */>
   <Component />
@@ -74,6 +79,11 @@ exports[`fragment.js 1`] = `
     </>
   </>
 </div>;
+
+foo = (
+  // comment
+  <></>
+);
 
 </* open fragment */>
   <Component />

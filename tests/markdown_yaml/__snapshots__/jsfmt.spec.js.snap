@@ -1,6 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`simple.md 1`] = `
+exports[`empty.md - markdown-verify: empty.md 1`] = `
+---
+---
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---
+---
+
+`;
+
+exports[`empty-2.md - markdown-verify: empty-2.md 1`] = `
+---
+---
+
+Content
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---
+---
+
+Content
+
+`;
+
+exports[`simple.md - markdown-verify: simple.md 1`] = `
 ---
 hello: world
 ---
@@ -8,5 +30,20 @@ hello: world
 ---
 hello: world
 ---
+
+`;
+
+exports[`simple-2.md - markdown-verify: simple-2.md 1`] = `
+---
+hello: world
+---
+
+Content
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---
+hello: world
+---
+
+Content
 
 `;

@@ -43,8 +43,8 @@ Print semicolons at the ends of statements.
 
 Valid options:
 
-* `true` - Add a semicolon at the end of every statement.
-* `false` - Only add semicolons at the beginning of lines that may introduce ASI failures.
+- `true` - Add a semicolon at the end of every statement.
+- `false` - Only add semicolons at the beginning of lines that may introduce ASI failures.
 
 | Default | CLI Override | API Override   |
 | ------- | ------------ | -------------- |
@@ -56,8 +56,8 @@ Use single quotes instead of double quotes.
 
 Notes:
 
-* Quotes in JSX will always be double and ignore this setting.
-* If the number of quotes outweighs the other quote, the quote which is less used will be used to format the string - Example: `"I'm double quoted"` results in `"I'm double quoted"` and `"This \"example\" is single quoted"` results in `'This "example" is single quoted'`.
+- Quotes in JSX will always be double and ignore this setting.
+- If the number of quotes outweighs the other quote, the quote which is less used will be used to format the string - Example: `"I'm double quoted"` results in `"I'm double quoted"` and `"This \"example\" is single quoted"` results in `'This "example" is single quoted'`.
 
 | Default | CLI Override     | API Override          |
 | ------- | ---------------- | --------------------- |
@@ -69,9 +69,9 @@ Print trailing commas wherever possible when multi-line. (A single-line array, f
 
 Valid options:
 
-* `"none"` - No trailing commas.
-* `"es5"` - Trailing commas where valid in ES5 (objects, arrays, etc.)
-* `"all"` - Trailing commas wherever possible (including function arguments). This requires node 8 or a [transform](https://babeljs.io/docs/plugins/syntax-trailing-function-commas/).
+- `"none"` - No trailing commas.
+- `"es5"` - Trailing commas where valid in ES5 (objects, arrays, etc.)
+- `"all"` - Trailing commas wherever possible (including function arguments). This requires node 8 or a [transform](https://babeljs.io/docs/plugins/syntax-trailing-function-commas/).
 
 | Default  | CLI Override                                           | API Override                                           |
 | -------- | ------------------------------------------------------ | ------------------------------------------------------ |
@@ -83,8 +83,8 @@ Print spaces between brackets in object literals.
 
 Valid options:
 
-* `true` - Example: `{ foo: bar }`.
-* `false` - Example: `{foo: bar}`.
+- `true` - Example: `{ foo: bar }`.
+- `false` - Example: `{foo: bar}`.
 
 | Default | CLI Override           | API Override             |
 | ------- | ---------------------- | ------------------------ |
@@ -94,6 +94,33 @@ Valid options:
 
 Put the `>` of a multi-line JSX element at the end of the last line instead of being alone on the next line (does not apply to self closing elements).
 
+Valid options:
+
+- `true` - Example:
+
+<!-- prettier-ignore -->
+```
+<button
+  className="prettier-class"
+  id="prettier-id"
+  onClick={this.handleClick}>
+  Click Here
+</button>
+```
+
+- `false` - Example:
+
+<!-- prettier-ignore -->
+```
+<button
+  className="prettier-class"
+  id="prettier-id"
+  onClick={this.handleClick}
+>
+  Click Here
+</button>
+```
+
 | Default | CLI Override              | API Override                 |
 | ------- | ------------------------- | ---------------------------- |
 | `false` | `--jsx-bracket-same-line` | `jsxBracketSameLine: <bool>` |
@@ -102,33 +129,16 @@ Put the `>` of a multi-line JSX element at the end of the last line instead of b
 
 _available in v1.9.0+_
 
-Include parentheses around a lone parameter of an arrow function, when possible:
+Include parentheses around a sole arrow function parameter.
 
 Valid options:
 
-* `"avoid"` - Omit parens when possible. Example: `x => x`
-* `"callbacks"` - Prefer `(x) => x`, except in callbacks. Example: `a.map(x => x.id)`
-* `"always"` - Always include parens. Example: `(x) => x`
+- `"avoid"` - Omit parens when possible. Example: `x => x`
+- `"always"` - Always include parens. Example: `(x) => x`
 
-Default | CLI Override | API Override
---------|--------------|-------------
-`"avoid"` | `--arrow-fn-parens <avoid,callbacks,always>` | `arrowFnParens: "<avoid,callbacks,always>"`
-
-## Arrow Function Parens
-Whether to use parens around a lone parameter of an arrow function, when possible:
-
-- `const fn = a => a.id;`
-- `arr.map(x => x.id)`
-
-Valid options:
-
- * `"avoid"` - Always prefer `x => x` when syntax allows.
- * `"callbacks"` - Prefer `(x) => x`, except in callbacks (`a.map(x => x.id)`).
- * `"always"` - Always prefer `(x) => x`.
-
-Default | CLI Override | API Override
---------|--------------|-------------
-`"avoid"` | `--arrow-fn-parens <avoid,callbacks,always>` | `arrowFnParens: "<avoid,callbacks,always>"`
+| Default   | CLI Override                                    | API Override                                    |
+| --------- | ----------------------------------------------- | ----------------------------------------------- |
+| `"avoid"` | <code>--arrow-parens <avoid&#124;always></code> | <code>arrowParens: "<avoid&#124;always>"</code> |
 
 ## Range
 
@@ -136,8 +146,8 @@ Format only a segment of a file.
 
 These two options can be used to format code starting and ending at a given character offset (inclusive and exclusive, respectively). The range will extend:
 
-* Backwards to the start of the first line containing the selected statement.
-* Forwards to the end of the selected statement.
+- Backwards to the start of the first line containing the selected statement.
+- Forwards to the end of the selected statement.
 
 These options cannot be used with `cursorOffset`.
 
@@ -154,19 +164,21 @@ Both the `babylon` and `flow` parsers support the same set of JavaScript feature
 
 Built-in parsers:
 
-* [`babylon`](https://github.com/babel/babylon/)
-* [`flow`](https://github.com/facebook/flow/tree/master/src/parser)
-* [`typescript`](https://github.com/eslint/typescript-eslint-parser) _Since v1.4.0_
-* [`postcss`](https://github.com/postcss/postcss) _Since v1.4.0_
-* [`json`](https://github.com/babel/babylon/tree/f09eb3200f57ea94d51c2a5b1facf2149fb406bf#babylonparseexpressioncode-options) _Since v1.5.0_
-* [`graphql`](https://github.com/graphql/graphql-js/tree/master/src/language) _Since v1.5.0_
-* [`markdown`](https://github.com/wooorm/remark/tree/master/packages/remark-parse) _Since v1.8.0_
+- [`babylon`](https://github.com/babel/babel/tree/master/packages/babylon)
+- [`flow`](https://github.com/facebook/flow/tree/master/src/parser)
+- [`typescript`](https://github.com/eslint/typescript-eslint-parser) _Since v1.4.0_
+- [`postcss`](https://github.com/postcss/postcss) _Since v1.4.0_
+- [`json`](https://github.com/babel/babylon/tree/f09eb3200f57ea94d51c2a5b1facf2149fb406bf#babylonparseexpressioncode-options) _Since v1.5.0_
+- [`graphql`](https://github.com/graphql/graphql-js/tree/master/src/language) _Since v1.5.0_
+- [`markdown`](https://github.com/wooorm/remark/tree/master/packages/remark-parse) _Since v1.8.0_
 
 [Custom parsers](api.md#custom-parser-api) are also supported. _Since v1.5.0_
 
-| Default   | CLI Override                                    | API Override                                               |
-| --------- | ----------------------------------------------- | ---------------------------------------------------------- |
-| `babylon` | `--parser <string>`<br />`--parser ./my-parser` | `parser: "<string>"`<br />`parser: require("./my-parser")` |
+| Default | CLI Override                                    | API Override                                               |
+| ------- | ----------------------------------------------- | ---------------------------------------------------------- |
+| None    | `--parser <string>`<br />`--parser ./my-parser` | `parser: "<string>"`<br />`parser: require("./my-parser")` |
+
+Note: the default value was `"babylon"` until v1.13.0.
 
 ## FilePath
 
@@ -222,8 +234,14 @@ Prettier can insert a special @format marker at the top of files specifying that
 
 _available in v1.8.2+_
 
-By default, Prettier will wrap markdown text at the specified print width. In some cases you may want to rely on editor/viewer soft wrapping instead, so this option allows you to opt out. When prose wrapping is disabled, each paragraph will be printed on its own line.
+By default, Prettier will wrap markdown text as-is since some services use a linebreak-sensitive renderer, e.g. GitHub comment and BitBucket. In some cases you may want to rely on editor/viewer soft wrapping instead, so this option allows you to opt out with `"never"`.
 
-| Default | CLI Override      | API Override        |
-| ------- | ----------------- | ------------------- |
-| `true`  | `--no-prose-wrap` | `proseWrap: <bool>` |
+Valid options:
+
+- `"always"` - Wrap prose if it exceeds the print width.
+- `"never"` - Do not wrap prose.
+- `"preserve"` - Wrap prose as-is. _available in v1.9.0+_
+
+| Default      | CLI Override                                                | API Override                                                |
+| ------------ | ----------------------------------------------------------- | ----------------------------------------------------------- |
+| `"preserve"` | <code>--prose-wrap <always&#124;never&#124;preserve></code> | <code>proseWrap: "<always&#124;never&#124;preserve>"</code> |

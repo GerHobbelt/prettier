@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`hello-world.html 1`] = `
+exports[`hello-world.html - parse5-verify: hello-world.html 1`] = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,7 +42,34 @@ exports[`hello-world.html 1`] = `
 </html>
 `;
 
-exports[`html-fragment.html 1`] = `
+exports[`html-comments.html - parse5-verify: html-comments.html 1`] = `
+<!-- htmlhint attr-lowercase: false -->
+<html>
+  <body>
+    <a href="#">Anchor</a>
+    <div hidden class="foo" id=bar></div>
+  </body>
+</html>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<!-- htmlhint attr-lowercase: false -->
+
+<html>
+
+<head />
+
+
+<body>
+  <a href="#">Anchor</a>
+  <div hidden
+    class="foo"
+    id="bar" />
+
+</body>
+</html>
+`;
+
+exports[`html-fragment.html - parse5-verify: html-fragment.html 1`] = `
 <a href="#">Link</a>
 
 <textarea>
@@ -51,4 +78,56 @@ exports[`html-fragment.html 1`] = `
 <a href="#">Link</a>
 <textarea />
 
+`;
+
+exports[`more-html.html - parse5-verify: more-html.html 1`] = `
+<html>
+<body>
+    <a href="#">Anchor</a>
+    <div hidden class="foo" id=bar></div>
+</body>
+</html>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+<html>
+
+<head />
+
+
+<body>
+  <a href="#">Anchor</a>
+  <div hidden
+    class="foo"
+    id="bar" />
+
+</body>
+</html>
+`;
+
+exports[`void-elements.html - parse5-verify: void-elements.html 1`] = `
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="code-guide.css">
+</head>
+<body></body>
+</html>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+<html>
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet"
+    href="code-guide.css">
+
+</head>
+
+<body>
+</body>
+</html>
 `;

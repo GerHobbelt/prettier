@@ -82,7 +82,7 @@ function memberOutside() {
 function memberInAndOutWithCalls() {
   return (
     // Reason for a
-    a.b()
+    aFunction.b()
   ).c.d()
 }
 
@@ -94,12 +94,12 @@ function excessiveEverything() {
 }
 
 // See https://github.com/prettier/prettier/issues/2392
-// function sequenceExpression() {
-//   return (
-//     // Reason for a
-//     a
-//   ), b
-// }
+function sequenceExpression() {
+  return (
+    // Reason for a
+    a
+  ), b
+}
 
 function sequenceExpressionInside() {
   return ( // Reason for a

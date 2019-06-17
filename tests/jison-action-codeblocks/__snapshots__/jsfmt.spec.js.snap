@@ -1,0 +1,188 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`action-blocks_0001.js - babylon-verify: action-blocks_0001.js 1`] = `
+rv = #LABEL#;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+rv = #LABEL#;
+
+`;
+
+exports[`action-blocks_0002.js - babylon-verify: action-blocks_0002.js 1`] = `
+@$ = @1 + 1;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@$ = @1 + 1;
+
+`;
+
+exports[`action-blocks_0003.js - babylon-verify: action-blocks_0003.js 1`] = `
+$$ = $1.tx(\`blub: \${$1} @ \${@1} vs. \${@alt_loc}?\`);~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$$ = $1.tx(\`blub: \${$1} @ \${@1} vs. \${@alt_loc}?\`);
+
+`;
+
+exports[`action-blocks_0004.js - babylon-verify: action-blocks_0004.js 1`] = `
+yyparser.prettyPrint(\`no dice! \${#ID#} is not what you are looking for!\`);~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+yyparser.prettyPrint(\`no dice! \${#ID#} is not what you are looking for!\`);
+
+`;
+
+exports[`action-blocks_0005.js - babylon-verify: action-blocks_0005.js 1`] = `
+$1.push($2, {
+	yylloc,
+	tokens: [#1, #2],
+})~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$1.push($2, {
+  yylloc,
+  tokens: [#1, #2]
+});
+
+`;
+
+exports[`action-blocks_0006.js - babylon-verify: action-blocks_0006.js 1`] = `
+if ($1 > 0) YYCONTINUE
+yyerror("B0rk @ " + #STMT)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if ($1 > 0) YYCONTINUE;
+yyerror("B0rk @ " + #STMT);
+
+`;
+
+exports[`action-blocks_0014.js - babylon-verify: action-blocks_0014.js 1`] = `
+$$ = $1.tx(\`blub: \${$$1} @ \${@@1} vs. \${##alt_loc}?\`);~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$$ = $1.tx(\`blub: \${$$1} @ \${@@1} vs. \${##alt_loc}?\`);
+
+`;
+
+exports[`action-blocks_0015.js - babylon-verify: action-blocks_0015.js 1`] = `
+// test jison negative index reference variables recognition:
+$$ = {
+	val: $-1 + a.tx(\`blub: \${$$-2} @ \${@@-3} vs. \${##-4}?\`),
+	loc: @-5,
+	idx: #-6,
+};~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// test jison negative index reference variables recognition:
+$$ = {
+  val: $-1 + a.tx(\`blub: \${$$-2} @ \${@@-3} vs. \${##-4}?\`),
+  loc: @-5,
+  idx: #-6
+};
+
+`;
+
+exports[`action-blocks_0016.js - babylon-verify: action-blocks_0016.js 1`] = `
+    if ($prec) {
+        if ($handle.length === 0) {
+            yyerror(rmCommonWS\`
+                You cannot specify a precedence override for an epsilon (a.k.a. empty) rule!
+
+                  Erroneous area:
+                \${yylexer.prettyPrintRange(@handle, @0 /* @handle is very probably NULL! We need this one for some decent location info! */, @action /* ditto! */)}
+            \`);
+        }
+        $$.push($prec);
+    }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if ($prec) {
+  if ($handle.length === 0) {
+    yyerror(rmCommonWS\`
+                You cannot specify a precedence override for an epsilon (a.k.a. empty) rule!
+
+                  Erroneous area:
+                \${yylexer.prettyPrintRange(
+                  @handle,
+                  @0 /* @handle is very probably NULL! We need this one for some decent location info! */,
+                  @action /* ditto! */
+                )}
+            \`);
+  }
+  $$.push($prec);
+}
+
+`;
+
+exports[`action-var-edge-cases_0017.js - babylon-verify: action-var-edge-cases_0017.js 1`] = `
+// test jison variable decoding edge cases: accept any number of $ as legal variable names
+    if ($) {
+        $$.push($);
+    }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// test jison variable decoding edge cases: accept any number of $ as legal variable names
+if ($) {
+  $$.push($);
+}
+
+`;
+
+exports[`action-var-edge-cases_0018.js - babylon-verify: action-var-edge-cases_0018.js 1`] = `
+// any jison var referencing current value is okay: $$, @$, #$, ##$, #$#
+$$ = 0;
+@$.range = [1, 2];
+// highly suspect as the next few are considered strictly CONSTANTS/RVALUES in JISON:
+#$--;
+##$--;
+#$#--;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// any jison var referencing current value is okay: $$, @$, #$, ##$, #$#
+$$ = 0;
+@$.range = [1, 2];
+// highly suspect as the next few are considered strictly CONSTANTS/RVALUES in JISON:
+#$--;
+##$--;
+#$#--;
+
+`;
+
+exports[`action-var-edge-cases_0019.js - babylon-verify: action-var-edge-cases_0019.js 1`] = `
+// do not confuse jison vars with @def or @@iter ES7/ESX constructs:
+@def.start_line = 1;
+@@iter.range = [2, 3];
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// do not confuse jison vars with @def or @@iter ES7/ESX constructs:
+@def.start_line = 1;
+@@iter.range = [2, 3];
+
+`;
+
+exports[`action-var-edge-cases_0020.js - babylon-verify: action-var-edge-cases_0020.js 1`] = `
+// negative index jison variables:
+$$ = $-1 + $-2 + $12;
+@$ = @-1 + @0;
+
+// babel itself does not have the smarts built in to detect the wrongness in these:
+#$ = #-1 + #0;
+##$ = ##-1 + ##7;
+#$# += #-1# + #0#;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// negative index jison variables:
+$$ = $-1 + $-2 + $12;
+@$ = @-1 + @0;
+
+// babel itself does not have the smarts built in to detect the wrongness in these:
+#$ = #-1 + #0;
+##$ = ##-1 + ##7;
+#$# += #-1# + #0#;
+
+`;
+
+exports[`not-jison-yet-legal-JS_0024.js - babylon-verify: not-jison-yet-legal-JS_0024.js 1`] = `
+// illegal = non-jison identifier: yet this decodes as legal JS: \`$ - $\`
+rv = $-$;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// illegal = non-jison identifier: yet this decodes as legal JS: \`$ - $\`
+rv = $ - $;
+
+`;
+
+exports[`not-jison-yet-legal-JS_0026.js - babylon-verify: not-jison-yet-legal-JS_0026.js 1`] = `
+// this decodes as legal JS: \`$ - 5\`
+rv = $- 5;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// this decodes as legal JS: \`$ - 5\`
+rv = $ - 5;
+
+`;
+
+exports[`not-jison-yet-legal-JS_0027.js - babylon-verify: not-jison-yet-legal-JS_0027.js 1`] = `
+// this decodes as legal JS: \`$ - 5\`
+rv = $ -5;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// this decodes as legal JS: \`$ - 5\`
+rv = $ - 5;
+
+`;

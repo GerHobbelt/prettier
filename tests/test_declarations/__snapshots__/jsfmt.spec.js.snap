@@ -1,6 +1,428 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test_declarations.js 1`] = `
+exports[`angular_async.js - flow-verify: angular_async.js 1`] = `
+beforeEach(async(() => {
+  // code
+}));
+
+afterAll(async(() => {
+  console.log('Hello');
+}));
+
+it('should create the app', async(() => {
+  //code
+}));
+
+it("does something really long and complicated so I have to write a very long name for the test", async(() => {
+  // code
+}));
+
+/*
+* isTestCall(parent) should only be called when parent exists
+* and parent.type is CallExpression. This test makes sure that
+* no errors are thrown when calling isTestCall(parent)
+*/
+function x() { async(() => {}) }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+beforeEach(async(() => {
+  // code
+}));
+
+afterAll(async(() => {
+  console.log("Hello");
+}));
+
+it("should create the app", async(() => {
+  //code
+}));
+
+it("does something really long and complicated so I have to write a very long name for the test", async(() => {
+  // code
+}));
+
+/*
+* isTestCall(parent) should only be called when parent exists
+* and parent.type is CallExpression. This test makes sure that
+* no errors are thrown when calling isTestCall(parent)
+*/
+function x() {
+  async(() => {});
+}
+
+`;
+
+exports[`angular_async.js - flow-verify: angular_async.js 2`] = `
+beforeEach(async(() => {
+  // code
+}));
+
+afterAll(async(() => {
+  console.log('Hello');
+}));
+
+it('should create the app', async(() => {
+  //code
+}));
+
+it("does something really long and complicated so I have to write a very long name for the test", async(() => {
+  // code
+}));
+
+/*
+* isTestCall(parent) should only be called when parent exists
+* and parent.type is CallExpression. This test makes sure that
+* no errors are thrown when calling isTestCall(parent)
+*/
+function x() { async(() => {}) }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+beforeEach(async(() => {
+  // code
+}));
+
+afterAll(async(() => {
+  console.log("Hello");
+}));
+
+it("should create the app", async(() => {
+  //code
+}));
+
+it("does something really long and complicated so I have to write a very long name for the test", async(() => {
+  // code
+}));
+
+/*
+* isTestCall(parent) should only be called when parent exists
+* and parent.type is CallExpression. This test makes sure that
+* no errors are thrown when calling isTestCall(parent)
+*/
+function x() {
+  async(() => {});
+}
+
+`;
+
+exports[`angularjs_inject.js - flow-verify: angularjs_inject.js 1`] = `
+beforeEach(inject(($fooService, $barService) => {
+  // code
+}));
+
+afterAll(inject(($fooService, $barService) => {
+  console.log('Hello');
+}));
+
+it('should create the app', inject(($fooService, $barService) => {
+  //code
+}));
+
+it("does something really long and complicated so I have to write a very long name for the test", inject(() => {
+  // code
+}));
+
+it("does something really long and complicated so I have to write a very long name for the test", inject(($fooServiceLongName, $barServiceLongName) => {
+  // code
+}));
+
+/*
+* isTestCall(parent) should only be called when parent exists
+* and parent.type is CallExpression. This test makes sure that
+* no errors are thrown when calling isTestCall(parent)
+*/
+function x() { inject(() => {}) }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+beforeEach(inject(($fooService, $barService) => {
+  // code
+}));
+
+afterAll(inject(($fooService, $barService) => {
+  console.log("Hello");
+}));
+
+it("should create the app", inject(($fooService, $barService) => {
+  //code
+}));
+
+it("does something really long and complicated so I have to write a very long name for the test", inject(() => {
+  // code
+}));
+
+it("does something really long and complicated so I have to write a very long name for the test", inject((
+  $fooServiceLongName,
+  $barServiceLongName
+) => {
+  // code
+}));
+
+/*
+* isTestCall(parent) should only be called when parent exists
+* and parent.type is CallExpression. This test makes sure that
+* no errors are thrown when calling isTestCall(parent)
+*/
+function x() {
+  inject(() => {});
+}
+
+`;
+
+exports[`angularjs_inject.js - flow-verify: angularjs_inject.js 2`] = `
+beforeEach(inject(($fooService, $barService) => {
+  // code
+}));
+
+afterAll(inject(($fooService, $barService) => {
+  console.log('Hello');
+}));
+
+it('should create the app', inject(($fooService, $barService) => {
+  //code
+}));
+
+it("does something really long and complicated so I have to write a very long name for the test", inject(() => {
+  // code
+}));
+
+it("does something really long and complicated so I have to write a very long name for the test", inject(($fooServiceLongName, $barServiceLongName) => {
+  // code
+}));
+
+/*
+* isTestCall(parent) should only be called when parent exists
+* and parent.type is CallExpression. This test makes sure that
+* no errors are thrown when calling isTestCall(parent)
+*/
+function x() { inject(() => {}) }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+beforeEach(inject(($fooService, $barService) => {
+  // code
+}));
+
+afterAll(inject(($fooService, $barService) => {
+  console.log("Hello");
+}));
+
+it("should create the app", inject(($fooService, $barService) => {
+  //code
+}));
+
+it("does something really long and complicated so I have to write a very long name for the test", inject(() => {
+  // code
+}));
+
+it("does something really long and complicated so I have to write a very long name for the test", inject((
+  $fooServiceLongName,
+  $barServiceLongName
+) => {
+  // code
+}));
+
+/*
+* isTestCall(parent) should only be called when parent exists
+* and parent.type is CallExpression. This test makes sure that
+* no errors are thrown when calling isTestCall(parent)
+*/
+function x() {
+  inject(() => {});
+}
+
+`;
+
+exports[`jest-each.js - flow-verify: jest-each.js 1`] = `
+describe.each\`
+a|b|expected
+\${11   } | \${  1  }|\${222}
+\${1-1}|\${2+2}|\${ 3333}
+\${2+1+2}|\${1111}|\${3}
+\`('$a + $b', ({a, b, expected}) => {
+  test(\`returns \${expected}\`, () => {
+    expect(a + b).toBe(expected);
+  });
+
+  test(\`returned value not be greater than \${expected}\`, () => {
+    expect(a + b).not.toBeGreaterThan(expected);
+  });
+
+  test(\`returned value not be less than \${expected}\`, () => {
+    expect(a + b).not.toBeLessThan(expected);
+  });
+});
+
+describe.only.each\`
+a|b|expected
+\${11   } | \${  1  }|\${222}|\${'unknown column 1'}|\${'unknown column 2'}
+\${1-1}|\${2+2}|\${ 3333}
+\${2+1+2}|\${1111}|\${3}          |\${'unknown column xyz'}
+\`
+
+describe.only.each\`
+||
+\${11   } | \${  1  }|\${222}|\${'unknown column 1'}|\${'unknown column 2'}
+\${1-1}|\${2+2}|\${ 3333}
+\${2+1+2}|\${1111}|\${3}          |\${'unknown column xyz'}
+\`
+
+describe.each\`a    | b    | expected
+\${1} | \${1} | \${2}
+\${1} | \${2} | \${3}
+\${2} | \${1} | \${3}\`
+
+// an example to demo multiline quasi
+describe.each\`a    | b    | expected
+\${11111111111} | \${a().b().c().d()} | \${2}
+\${1} | \${2} | \${3}
+\${2} | \${1} | \${3}\`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+describe.each\`
+  a            | b        | expected
+  \${11}        | \${1}     | \${222}
+  \${1 - 1}     | \${2 + 2} | \${3333}
+  \${2 + 1 + 2} | \${1111}  | \${3}
+\`("$a + $b", ({ a, b, expected }) => {
+  test(\`returns \${expected}\`, () => {
+    expect(a + b).toBe(expected);
+  });
+
+  test(\`returned value not be greater than \${expected}\`, () => {
+    expect(a + b).not.toBeGreaterThan(expected);
+  });
+
+  test(\`returned value not be less than \${expected}\`, () => {
+    expect(a + b).not.toBeLessThan(expected);
+  });
+});
+
+describe.only.each\`
+  a            | b        | expected
+  \${11}        | \${1}     | \${222}   | \${"unknown column 1"}   | \${"unknown column 2"}
+  \${1 - 1}     | \${2 + 2} | \${3333}
+  \${2 + 1 + 2} | \${1111}  | \${3}     | \${"unknown column xyz"}
+\`;
+
+describe.only.each\`
+               |          |
+  \${11}        | \${1}     | \${222}  | \${"unknown column 1"}   | \${"unknown column 2"}
+  \${1 - 1}     | \${2 + 2} | \${3333}
+  \${2 + 1 + 2} | \${1111}  | \${3}    | \${"unknown column xyz"}
+\`;
+
+describe.each\`
+  a    | b    | expected
+  \${1} | \${1} | \${2}
+  \${1} | \${2} | \${3}
+  \${2} | \${1} | \${3}
+\`;
+
+// an example to demo multiline quasi
+describe.each\`
+  a    | b    | expected
+  \${11111111111} | \${a()
+  .b()
+  .c()
+  .d()} | \${2}
+  \${1} | \${2} | \${3}
+  \${2} | \${1} | \${3}
+\`;
+
+`;
+
+exports[`jest-each.js - flow-verify: jest-each.js 2`] = `
+describe.each\`
+a|b|expected
+\${11   } | \${  1  }|\${222}
+\${1-1}|\${2+2}|\${ 3333}
+\${2+1+2}|\${1111}|\${3}
+\`('$a + $b', ({a, b, expected}) => {
+  test(\`returns \${expected}\`, () => {
+    expect(a + b).toBe(expected);
+  });
+
+  test(\`returned value not be greater than \${expected}\`, () => {
+    expect(a + b).not.toBeGreaterThan(expected);
+  });
+
+  test(\`returned value not be less than \${expected}\`, () => {
+    expect(a + b).not.toBeLessThan(expected);
+  });
+});
+
+describe.only.each\`
+a|b|expected
+\${11   } | \${  1  }|\${222}|\${'unknown column 1'}|\${'unknown column 2'}
+\${1-1}|\${2+2}|\${ 3333}
+\${2+1+2}|\${1111}|\${3}          |\${'unknown column xyz'}
+\`
+
+describe.only.each\`
+||
+\${11   } | \${  1  }|\${222}|\${'unknown column 1'}|\${'unknown column 2'}
+\${1-1}|\${2+2}|\${ 3333}
+\${2+1+2}|\${1111}|\${3}          |\${'unknown column xyz'}
+\`
+
+describe.each\`a    | b    | expected
+\${1} | \${1} | \${2}
+\${1} | \${2} | \${3}
+\${2} | \${1} | \${3}\`
+
+// an example to demo multiline quasi
+describe.each\`a    | b    | expected
+\${11111111111} | \${a().b().c().d()} | \${2}
+\${1} | \${2} | \${3}
+\${2} | \${1} | \${3}\`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+describe.each\`
+  a            | b        | expected
+  \${11}        | \${1}     | \${222}
+  \${1 - 1}     | \${2 + 2} | \${3333}
+  \${2 + 1 + 2} | \${1111}  | \${3}
+\`("$a + $b", ({ a, b, expected }) => {
+  test(\`returns \${expected}\`, () => {
+    expect(a + b).toBe(expected);
+  });
+
+  test(\`returned value not be greater than \${expected}\`, () => {
+    expect(a + b).not.toBeGreaterThan(expected);
+  });
+
+  test(\`returned value not be less than \${expected}\`, () => {
+    expect(a + b).not.toBeLessThan(expected);
+  });
+});
+
+describe.only.each\`
+  a            | b        | expected
+  \${11}        | \${1}     | \${222}   | \${"unknown column 1"}   | \${"unknown column 2"}
+  \${1 - 1}     | \${2 + 2} | \${3333}
+  \${2 + 1 + 2} | \${1111}  | \${3}     | \${"unknown column xyz"}
+\`;
+
+describe.only.each\`
+               |          |
+  \${11}        | \${1}     | \${222}  | \${"unknown column 1"}   | \${"unknown column 2"}
+  \${1 - 1}     | \${2 + 2} | \${3333}
+  \${2 + 1 + 2} | \${1111}  | \${3}    | \${"unknown column xyz"}
+\`;
+
+describe.each\`
+  a    | b    | expected
+  \${1} | \${1} | \${2}
+  \${1} | \${2} | \${3}
+  \${2} | \${1} | \${3}
+\`;
+
+// an example to demo multiline quasi
+describe.each\`
+  a    | b    | expected
+  \${11111111111} | \${a()
+  .b()
+  .c()
+  .d()} | \${2}
+  \${1} | \${2} | \${3}
+  \${2} | \${1} | \${3}
+\`;
+
+`;
+
+exports[`test_declarations.js - flow-verify: test_declarations.js 1`] = `
 // Shouldn't break
 
 it("does something really long and complicated so I have to write a very long name for the test", () => {
@@ -8,6 +430,14 @@ it("does something really long and complicated so I have to write a very long na
 });
 
 it("does something really long and complicated so I have to write a very long name for the test", function() {
+  console.log("hello!");
+});
+
+it("does something really long and complicated so I have to write a very long name for the test", function(done) {
+  console.log("hello!");
+});
+
+it("does something really long and complicated so I have to write a very long name for the test", function myAssertions(done) {
   console.log("hello!");
 });
 
@@ -84,6 +514,10 @@ ftest("does something really long and complicated so I have to write a very long
 
 xtest("does something really long and complicated so I have to write a very long name for the describe block", () => {});
 
+skip(\`does something really long and complicated so I have to write a very long name for the test\`, () => {});
+
+skip("does something really long and complicated so I have to write a very long name for the test", () => {});
+
 // Should break
 
 it.only("does something really long and complicated so I have to write a very long name for the test", 10, () => {
@@ -97,6 +531,8 @@ it.only.only("does something really long and complicated so I have to write a ve
 it.only.only("does something really long and complicated so I have to write a very long name for the test", (a, b, c) => {
   console.log("hello!");
 });
+
+xskip("does something really long and complicated so I have to write a very long name for the test", () => {});
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Shouldn't break
 
@@ -105,6 +541,14 @@ it("does something really long and complicated so I have to write a very long na
 });
 
 it("does something really long and complicated so I have to write a very long name for the test", function() {
+  console.log("hello!");
+});
+
+it("does something really long and complicated so I have to write a very long name for the test", function(done) {
+  console.log("hello!");
+});
+
+it("does something really long and complicated so I have to write a very long name for the test", function myAssertions(done) {
   console.log("hello!");
 });
 
@@ -183,6 +627,10 @@ ftest("does something really long and complicated so I have to write a very long
 
 xtest("does something really long and complicated so I have to write a very long name for the describe block", () => {});
 
+skip(\`does something really long and complicated so I have to write a very long name for the test\`, () => {});
+
+skip("does something really long and complicated so I have to write a very long name for the test", () => {});
+
 // Should break
 
 it.only(
@@ -207,9 +655,14 @@ it.only.only(
   }
 );
 
+xskip(
+  "does something really long and complicated so I have to write a very long name for the test",
+  () => {}
+);
+
 `;
 
-exports[`test_declarations.js 2`] = `
+exports[`test_declarations.js - flow-verify: test_declarations.js 2`] = `
 // Shouldn't break
 
 it("does something really long and complicated so I have to write a very long name for the test", () => {
@@ -217,6 +670,14 @@ it("does something really long and complicated so I have to write a very long na
 });
 
 it("does something really long and complicated so I have to write a very long name for the test", function() {
+  console.log("hello!");
+});
+
+it("does something really long and complicated so I have to write a very long name for the test", function(done) {
+  console.log("hello!");
+});
+
+it("does something really long and complicated so I have to write a very long name for the test", function myAssertions(done) {
   console.log("hello!");
 });
 
@@ -289,6 +750,10 @@ ftest("does something really long and complicated so I have to write a very long
 
 xtest("does something really long and complicated so I have to write a very long name for the describe block", () => {});
 
+skip(\`does something really long and complicated so I have to write a very long name for the test\`, () => {});
+
+skip("does something really long and complicated so I have to write a very long name for the test", () => {});
+
 // Should break
 
 it.only("does something really long and complicated so I have to write a very long name for the test", 10, () => {
@@ -302,6 +767,8 @@ it.only.only("does something really long and complicated so I have to write a ve
 it.only.only("does something really long and complicated so I have to write a very long name for the test", (a, b, c) => {
   console.log("hello!");
 });
+
+xskip("does something really long and complicated so I have to write a very long name for the test", () => {});
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Shouldn't break
 
@@ -310,6 +777,14 @@ it("does something really long and complicated so I have to write a very long na
 });
 
 it("does something really long and complicated so I have to write a very long name for the test", function() {
+  console.log("hello!");
+});
+
+it("does something really long and complicated so I have to write a very long name for the test", function(done) {
+  console.log("hello!");
+});
+
+it("does something really long and complicated so I have to write a very long name for the test", function myAssertions(done) {
   console.log("hello!");
 });
 
@@ -382,6 +857,10 @@ ftest("does something really long and complicated so I have to write a very long
 
 xtest("does something really long and complicated so I have to write a very long name for the describe block", () => {});
 
+skip(\`does something really long and complicated so I have to write a very long name for the test\`, () => {});
+
+skip("does something really long and complicated so I have to write a very long name for the test", () => {});
+
 // Should break
 
 it.only(
@@ -404,6 +883,11 @@ it.only.only(
   (a, b, c) => {
     console.log("hello!");
   }
+);
+
+xskip(
+  "does something really long and complicated so I have to write a very long name for the test",
+  () => {}
 );
 
 `;

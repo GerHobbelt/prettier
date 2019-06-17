@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`assignment-pattern.js 1`] = `
+exports[`assignment-pattern.js - flow-verify: assignment-pattern.js 1`] = `
 const { a /* comment */ = 1 } = b;
 
 const { c = 1 /* comment */ } = d;
@@ -18,7 +18,7 @@ let {
 
 `;
 
-exports[`before-comma.js 1`] = `
+exports[`before-comma.js - flow-verify: before-comma.js 1`] = `
 const foo = {
   a: 'a' /* comment for this line */,
 
@@ -35,7 +35,7 @@ const foo = {
 
 `;
 
-exports[`blank.js 1`] = `
+exports[`blank.js - flow-verify: blank.js 1`] = `
 // This file only
 // has comments. This comment
 // should still exist
@@ -82,7 +82,34 @@ exports[`blank.js 1`] = `
 
 `;
 
-exports[`call_comment.js 1`] = `
+exports[`break-continue-statements.js - flow-verify: break-continue-statements.js 1`] = `
+for (;;) {
+  break /* comment */;
+  continue /* comment */;
+}
+
+loop: for (;;) {
+  break /* comment */ loop;
+  break loop /* comment */;
+  continue /* comment */ loop;
+  continue loop /* comment */;
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+for (;;) {
+  break; /* comment */
+  continue; /* comment */
+}
+
+loop: for (;;) {
+  break /* comment */ loop;
+  break loop /* comment */;
+  continue /* comment */ loop;
+  continue loop /* comment */;
+}
+
+`;
+
+exports[`call_comment.js - flow-verify: call_comment.js 1`] = `
 render( // Warm any cache
   <ChildUpdates renderAnchor={true} anchorClassOn={true} />,
   container
@@ -107,7 +134,7 @@ React.render(
 
 `;
 
-exports[`closure-compiler-type-cast.js 1`] = `
+exports[`closure-compiler-type-cast.js - flow-verify: closure-compiler-type-cast.js 1`] = `
 // test to make sure comments are attached correctly
 let inlineComment = /* some comment */ (
   someReallyLongFunctionCall(withLots, ofArguments));
@@ -124,6 +151,10 @@ functionCall(1 + /** @type {string} */ (value), /** @type {!Foo} */ ({}));
 function returnValue() {
   return /** @type {!Array.<string>} */ (['hello', 'you']);
 }
+
+var newArray = /** @type {array} */ (numberOrString).map(x => x);
+var newArray = /** @type {array} */ ((numberOrString)).map(x => x);
+var newArray = /** @type {array} */ ((numberOrString).map(x => x));
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // test to make sure comments are attached correctly
 let inlineComment = /* some comment */ someReallyLongFunctionCall(
@@ -144,9 +175,13 @@ function returnValue() {
   return /** @type {!Array.<string>} */ (["hello", "you"]);
 }
 
+var newArray = /** @type {array} */ (numberOrString).map(x => x);
+var newArray = /** @type {array} */ (numberOrString).map(x => x);
+var newArray = /** @type {array} */ (numberOrString.map(x => x));
+
 `;
 
-exports[`dangling.js 1`] = `
+exports[`dangling.js - flow-verify: dangling.js 1`] = `
 var x = {/* dangling */};
 var x = {
   // dangling
@@ -177,7 +212,7 @@ export /* dangling */{};
 
 `;
 
-exports[`dangling_array.js 1`] = `
+exports[`dangling_array.js - flow-verify: dangling_array.js 1`] = `
 expect(() => {}).toTriggerReadyStateChanges([
   // Nothing.
 ]);
@@ -192,7 +227,7 @@ expect(() => {}).toTriggerReadyStateChanges([
 
 `;
 
-exports[`dangling_for.js 1`] = `
+exports[`dangling_for.js - flow-verify: dangling_for.js 1`] = `
 for // comment
 (;;);
 
@@ -206,7 +241,86 @@ for (;;);
 
 `;
 
-exports[`dynamic_imports.js 1`] = `
+exports[`dangling_object.js - flow-verify: dangling_object.js 1`] = `
+// Full-featured Lexer Run-Time Class core (to be included in every generated lexer)
+let lexer = {
+    EOF: 1,
+    ERROR: 2,
+
+    // JisonLexerError: JisonLexerError,        /// <-- injected by the code generator
+
+    // options: {},                             /// <-- injected by the code generator
+
+    // yy: ...,                                 /// <-- injected by setInput()
+
+    __currentRuleSet__: null,                   /// INTERNAL USE ONLY: internal rule set cache for the current lexer state
+
+    __error_infos: [],                          /// INTERNAL USE ONLY: the set of lexErrorInfo objects created since the last cleanup
+
+    __decompressed: false,                      /// INTERNAL USE ONLY: mark whether the lexer instance has been 'unfolded' completely and is now ready for use
+
+    done: false,                                /// INTERNAL USE ONLY
+    _backtrack: false,                          /// INTERNAL USE ONLY
+    _input: '',                                 /// INTERNAL USE ONLY
+    _more: false,                               /// INTERNAL USE ONLY
+    _signaled_error_token: false,               /// INTERNAL USE ONLY
+    _clear_state: 0,                            /// INTERNAL USE ONLY; 0: clear to do, 1: clear done for lex()/next(); -1: clear done for inut()/unput()/...
+
+    conditionStack: [],                         /// INTERNAL USE ONLY; managed via \`pushState()\`, \`popState()\`, \`topState()\` and \`stateStackSize()\`
+
+    match: '',                                  /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: tracks input which has been matched so far for the lexer token under construction. \`match\` is identical to \`yytext\` except that this one still contains the matched input string after \`lexer.performAction()\` has been invoked, where userland code MAY have changed/replaced the \`yytext\` value entirely!
+    matched: '',                                /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: tracks entire input which has been matched so far
+    matches: false,                             /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: tracks RE match result for last (successful) match attempt
+    yytext: '',                                 /// ADVANCED USE ONLY: tracks input which has been matched so far for the lexer token under construction; this value is transferred to the parser as the 'token value' when the parser consumes the lexer token produced through a call to the \`lex()\` API.
+    offset: 0,                                  /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: tracks the 'cursor position' in the input string, i.e. the number of characters matched so far. (**WARNING:** this value MAY be negative if you \`unput()\` more text than you have already lexed. This type of behaviour is generally observed for one kind of 'lexer/parser hack' where custom token-illiciting characters are pushed in front of the input stream to help simulate multiple-START-points in the parser. When this happens, \`base_position\` will be adjusted to help track the original input's starting point in the \`_input\` buffer.)
+    base_position: 0,                           /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: index to the original starting point of the input; always ZERO(0) unless \`unput()\` has pushed content before the input: see the \`offset\` **WARNING** just above.
+    yyleng: 0,                                  /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: length of matched input for the token under construction (\`yytext\`)
+    yylineno: 0,                                /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: 'line number' at which the token under construction is located
+    yylloc: null,                               /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: tracks location info (lines + columns) for the token under construction
+    CRLF_Re: /\\r\\n?|\\n/,                        /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: regex used to split lines while tracking the lexer cursor position.
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Full-featured Lexer Run-Time Class core (to be included in every generated lexer)
+let lexer = {
+  EOF: 1,
+  ERROR: 2,
+
+  // JisonLexerError: JisonLexerError,        /// <-- injected by the code generator
+
+  // options: {},                             /// <-- injected by the code generator
+
+  // yy: ...,                                 /// <-- injected by setInput()
+
+  __currentRuleSet__: null, /// INTERNAL USE ONLY: internal rule set cache for the current lexer state
+
+  __error_infos: [], /// INTERNAL USE ONLY: the set of lexErrorInfo objects created since the last cleanup
+
+  __decompressed: false, /// INTERNAL USE ONLY: mark whether the lexer instance has been 'unfolded' completely and is now ready for use
+
+  done: false, /// INTERNAL USE ONLY
+  _backtrack: false, /// INTERNAL USE ONLY
+  _input: "", /// INTERNAL USE ONLY
+  _more: false, /// INTERNAL USE ONLY
+  _signaled_error_token: false, /// INTERNAL USE ONLY
+  _clear_state: 0, /// INTERNAL USE ONLY; 0: clear to do, 1: clear done for lex()/next(); -1: clear done for inut()/unput()/...
+
+  conditionStack: [], /// INTERNAL USE ONLY; managed via \`pushState()\`, \`popState()\`, \`topState()\` and \`stateStackSize()\`
+
+  match: "", /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: tracks input which has been matched so far for the lexer token under construction. \`match\` is identical to \`yytext\` except that this one still contains the matched input string after \`lexer.performAction()\` has been invoked, where userland code MAY have changed/replaced the \`yytext\` value entirely!
+  matched: "", /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: tracks entire input which has been matched so far
+  matches: false, /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: tracks RE match result for last (successful) match attempt
+  yytext: "", /// ADVANCED USE ONLY: tracks input which has been matched so far for the lexer token under construction; this value is transferred to the parser as the 'token value' when the parser consumes the lexer token produced through a call to the \`lex()\` API.
+  offset: 0, /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: tracks the 'cursor position' in the input string, i.e. the number of characters matched so far. (**WARNING:** this value MAY be negative if you \`unput()\` more text than you have already lexed. This type of behaviour is generally observed for one kind of 'lexer/parser hack' where custom token-illiciting characters are pushed in front of the input stream to help simulate multiple-START-points in the parser. When this happens, \`base_position\` will be adjusted to help track the original input's starting point in the \`_input\` buffer.)
+  base_position: 0, /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: index to the original starting point of the input; always ZERO(0) unless \`unput()\` has pushed content before the input: see the \`offset\` **WARNING** just above.
+  yyleng: 0, /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: length of matched input for the token under construction (\`yytext\`)
+  yylineno: 0, /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: 'line number' at which the token under construction is located
+  yylloc: null, /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: tracks location info (lines + columns) for the token under construction
+  CRLF_Re: /\\r\\n?|\\n/ /// READ-ONLY EXTERNAL ACCESS - ADVANCED USE ONLY: regex used to split lines while tracking the lexer cursor position.
+};
+
+`;
+
+exports[`dynamic_imports.js - flow-verify: dynamic_imports.js 1`] = `
 import(/* Hello */ 'something')
 
 import('something' /* Hello */)
@@ -225,16 +339,48 @@ import("something" /* Hello */ + "else");
 
 `;
 
-exports[`export.js 1`] = `
+exports[`export.js - flow-verify: export.js 1`] = `
 export //comment
 {}
+
+export /* comment */ {};
+
+export {
+  foo // comment
+}
+
+export {
+  // comment
+  bar
+}
+
+export {
+  fooo, // comment
+  barr, // comment
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//comment
-export {};
+export //comment
+{};
+
+export /* comment */{};
+
+export {
+  foo // comment
+};
+
+export {
+  // comment
+  bar
+};
+
+export {
+  fooo, // comment
+  barr // comment
+};
 
 `;
 
-exports[`first-line.js 1`] = `
+exports[`first-line.js - flow-verify: first-line.js 1`] = `
 a // comment
 b
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -243,7 +389,7 @@ b;
 
 `;
 
-exports[`flow_union.js 1`] = `
+exports[`flow_union.js - flow-verify: flow_union.js 1`] = `
 type UploadState<E, EM, D>
   // The upload hasnt begun yet
   = {type: "Not_begun"}
@@ -286,7 +432,7 @@ type UploadState<E, EM, D> =
 
 `;
 
-exports[`function-declaration.js 1`] = `
+exports[`function-declaration.js - flow-verify: function-declaration.js 1`] = `
 function a(/* comment */) {} // comment
 function b() {} // comment
 function c(/* comment */ argA, argB, argC) {} // comment
@@ -339,31 +485,24 @@ KEYPAD_NUMBERS.map((
 
 function f /* f */() {}
 function f(/* args */) {}
-function f() /* returns */ {
-}
-function f /* f */(/* args */) /* returns */ {
-}
+function f() /* returns */ {}
+function f /* f */(/* args */) /* returns */ {}
 
 function f /* f */(/* a */ a) {}
 function f /* f */(a /* a */) {}
-function f /* f */(/* a */ a) /* returns */ {
-}
+function f /* f */(/* a */ a) /* returns */ {}
 
 const obj = {
   f1 /* f */() {},
   f2(/* args */) {},
-  f3() /* returns */ {
-  },
-  f4 /* f */(/* args */) /* returns */ {
-  }
+  f3() /* returns */ {},
+  f4 /* f */(/* args */) /* returns */ {}
 };
 
 (function f /* f */() {})();
 (function f(/* args */) {})();
-(function f() /* returns */ {
-})();
-(function f /* f */(/* args */) /* returns */ {
-})();
+(function f() /* returns */ {})();
+(function f /* f */(/* args */) /* returns */ {})();
 
 class C {
   f /* f */() {}
@@ -372,17 +511,15 @@ class C {
   f(/* args */) {}
 }
 class C {
-  f() /* returns */ {
-  }
+  f() /* returns */ {}
 }
 class C {
-  f /* f */(/* args */) /* returns */ {
-  }
+  f /* f */(/* args */) /* returns */ {}
 }
 
 `;
 
-exports[`if.js 1`] = `
+exports[`if.js - flow-verify: if.js 1`] = `
 if (1)
 // comment
 {
@@ -453,20 +590,26 @@ true
 if (1) {
   // comment
   false;
-} else if (2)
-  // comment
-  true;
+}
+// comment
+else if (2) true;
+// multi
+// ple
+// lines
 else if (3)
-  // multi
-  // ple
-  // lines
   // existing comment
   true;
+// okay?
 else if (4) {
-  // okay?
   // empty with existing comment
-} else {
-  // comment
+}
+// comment
+else {
+}
+
+if (1) {
+} // comment
+else {
 }
 
 if (1) {
@@ -484,8 +627,8 @@ if (6) {
 } else if (7)
   // comment
   true;
+// comment
 else {
-  // comment
   true;
 }
 
@@ -497,9 +640,9 @@ if (8) {
   // comment
   // comment
   true;
+// comment
+// comment
 else {
-  // comment
-  // comment
   true;
 }
 
@@ -515,8 +658,7 @@ else if (12)
 else if (13)
   /* comment */ /* comment */ // comment
   true;
-else {
-  /* comment */
+/* comment */ else {
   true;
 }
 
@@ -533,7 +675,7 @@ if (14) {
 
 `;
 
-exports[`issues.js 1`] = `
+exports[`issues.js - flow-verify: issues.js 1`] = `
 // Does not need to break as it fits in 80 columns
 this.call(a, /* comment */ b);
 
@@ -741,8 +883,9 @@ if (1) {
 
 // Comments trigger invalid JavaScript in-between else if
 if (1) {
-} else {
-  // Comment
+}
+// Comment
+else {
 }
 
 // The comment makes the line break in a weird way
@@ -756,7 +899,7 @@ foo(
 
 `;
 
-exports[`jsx.js 1`] = `
+exports[`jsx.js - flow-verify: jsx.js 1`] = `
 <div>
   {
     /* comment */
@@ -983,7 +1126,7 @@ onClick={() => {}}>
 
 `;
 
-exports[`last-arg.js 1`] = `
+exports[`last-arg.js - flow-verify: last-arg.js 1`] = `
 type f = (
   currentRequest: {a: number},
   // TODO this is a very very very very long comment that makes it go > 80 columns
@@ -1143,8 +1286,7 @@ class Foo {
     lol2 /*string*/,
     lol3 /*string*/,
     lol4 /*string*/
-  ) /*string*/ {
-  }
+  ) /*string*/ {}
 
   // prettier-ignore
   c(lol /*string*/
@@ -1169,7 +1311,7 @@ class Foo {
 
 `;
 
-exports[`preserve-new-line-last.js 1`] = `
+exports[`preserve-new-line-last.js - flow-verify: preserve-new-line-last.js 1`] = `
 function f() {
   a
   /* eslint-disable */
@@ -1216,7 +1358,7 @@ function name() {
 
 `;
 
-exports[`return-statement.js 1`] = `
+exports[`return-statement.js - flow-verify: return-statement.js 1`] = `
 function jsx() {
   return (
     // Comment
@@ -1301,7 +1443,7 @@ function memberOutside() {
 function memberInAndOutWithCalls() {
   return (
     // Reason for a
-    a.b()
+    aFunction.b()
   ).c.d()
 }
 
@@ -1313,12 +1455,12 @@ function excessiveEverything() {
 }
 
 // See https://github.com/prettier/prettier/issues/2392
-// function sequenceExpression() {
-//   return (
-//     // Reason for a
-//     a
-//   ), b
-// }
+function sequenceExpression() {
+  return (
+    // Reason for a
+    a
+  ), b
+}
 
 function sequenceExpressionInside() {
   return ( // Reason for a
@@ -1429,7 +1571,7 @@ function memberOutside() {
 
 function memberInAndOutWithCalls() {
   return (
-    a
+    aFunction
       .b// Reason for a
       ()
       .c.d()
@@ -1444,12 +1586,12 @@ function excessiveEverything() {
 }
 
 // See https://github.com/prettier/prettier/issues/2392
-// function sequenceExpression() {
-//   return (
-//     // Reason for a
-//     a
-//   ), b
-// }
+function sequenceExpression() {
+  return (
+    // Reason for a
+    a, b
+  );
+}
 
 function sequenceExpressionInside() {
   return (
@@ -1471,7 +1613,7 @@ function inlineComment() {
 
 `;
 
-exports[`switch.js 1`] = `
+exports[`switch.js - flow-verify: switch.js 1`] = `
 switch (node && node.type) {
   case "Property":
   case "MethodDefinition":
@@ -1551,7 +1693,7 @@ switch (foo) {
 
 `;
 
-exports[`template-literal.js 1`] = `
+exports[`template-literal.js - flow-verify: template-literal.js 1`] = `
 \`
 \${a // comment
 }
@@ -1582,7 +1724,7 @@ d //comment
 
 `;
 
-exports[`trailing_space.js 1`] = `
+exports[`trailing_space.js - flow-verify: trailing_space.js 1`] = `
 #!/there/is-space-here->         
 
 // Do not trim trailing whitespace from this source file!
@@ -1597,7 +1739,61 @@ exports[`trailing_space.js 1`] = `
 
 `;
 
-exports[`try.js 1`] = `
+exports[`trailing-jsdocs.js - flow-verify: trailing-jsdocs.js 1`] = `
+const CONNECTION_STATUS = exports.CONNECTION_STATUS = {
+  CLOSED: Object.freeze({ kind: 'CLOSED' }),
+  CONNECTED: Object.freeze({ kind: 'CONNECTED' }),
+  CONNECTING: Object.freeze({ kind: 'CONNECTING' }),
+  NOT_CONNECTED: Object.freeze({ kind: 'NOT_CONNECTED' }) };
+
+/* A comment */ /**
+* A type that can be written to a buffer.
+*/ /**
+* Describes the connection status of a ReactiveSocket/DuplexConnection.
+* - NOT_CONNECTED: no connection established or pending.
+* - CONNECTING: when \`connect()\` has been called but a connection is not yet
+*   established.
+* - CONNECTED: when a connection is established.
+* - CLOSED: when the connection has been explicitly closed via \`close()\`.
+* - ERROR: when the connection has been closed for any other reason.
+*/ /**
+* A contract providing different interaction models per the [ReactiveSocket protocol]
+* (https://github.com/ReactiveSocket/reactivesocket/blob/master/Protocol.md).
+*/ /**
+* A single unit of data exchanged between the peers of a \`ReactiveSocket\`.
+*/
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+const CONNECTION_STATUS = (exports.CONNECTION_STATUS = {
+  CLOSED: Object.freeze({ kind: "CLOSED" }),
+  CONNECTED: Object.freeze({ kind: "CONNECTED" }),
+  CONNECTING: Object.freeze({ kind: "CONNECTING" }),
+  NOT_CONNECTED: Object.freeze({ kind: "NOT_CONNECTED" })
+});
+
+/* A comment */
+/**
+ * A type that can be written to a buffer.
+ */
+/**
+ * Describes the connection status of a ReactiveSocket/DuplexConnection.
+ * - NOT_CONNECTED: no connection established or pending.
+ * - CONNECTING: when \`connect()\` has been called but a connection is not yet
+ *   established.
+ * - CONNECTED: when a connection is established.
+ * - CLOSED: when the connection has been explicitly closed via \`close()\`.
+ * - ERROR: when the connection has been closed for any other reason.
+ */
+/**
+ * A contract providing different interaction models per the [ReactiveSocket protocol]
+ * (https://github.com/ReactiveSocket/reactivesocket/blob/master/Protocol.md).
+ */
+/**
+ * A single unit of data exchanged between the peers of a \`ReactiveSocket\`.
+ */
+
+`;
+
+exports[`try.js - flow-verify: try.js 1`] = `
 // comment 1
 try {
   // comment 2
@@ -1625,7 +1821,7 @@ try {
 
 `;
 
-exports[`variable_declarator.js 1`] = `
+exports[`variable_declarator.js - flow-verify: variable_declarator.js 1`] = `
 let obj = // Comment
 {
   key: 'val'
@@ -1663,6 +1859,24 @@ let obj = [
   // Comment
   'val'
 ]
+
+let obj = // Comment
+\`val\`;
+
+let obj = // Comment
+\`
+val
+val
+\`;
+
+let obj = // Comment
+tag\`val\`;
+
+let obj = // Comment
+tag\`
+val
+val
+\`;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 let obj =
   // Comment
@@ -1703,5 +1917,27 @@ let obj = [
   // Comment
   "val"
 ];
+
+let obj =
+  // Comment
+  \`val\`;
+
+let obj =
+  // Comment
+  \`
+val
+val
+\`;
+
+let obj =
+  // Comment
+  tag\`val\`;
+
+let obj =
+  // Comment
+  tag\`
+val
+val
+\`;
 
 `;

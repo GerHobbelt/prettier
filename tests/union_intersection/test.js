@@ -32,3 +32,28 @@ type Comment = {
   };
   start: number;
 };
+
+type Props = {
+  onChange: (
+    | {
+        name: string
+      }
+    | {
+        title: string
+      }
+    | {
+        year: year
+      }
+  ) => void
+};
+
+declare class FormData {
+  append(
+    options?:
+      | string
+      | {
+          filepath?: string,
+          filename?: string
+        }
+  ): void;
+}

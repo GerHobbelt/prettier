@@ -52,7 +52,7 @@
     "postcss-values-parser": "1.5.0",
     "remark-parse": "5.0.0",
     "resolve": "1.7.1",
-    "semver": "5.5.0",
+    "semver": "7.5.2",
     "string-width": "2.1.1",
     "typescript": "3.0.0-dev.20180602",
     "typescript-eslint-parser": "16.0.0",

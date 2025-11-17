@@ -20,7 +20,7 @@
     "camelcase": "5.0.0",
     "chalk": "2.4.1",
     "cjk-regex": "2.0.0",
-    "cosmiconfig": "5.0.5",
+    "cosmiconfig": "6.0.0",
     "dashify": "1.0.0",
     "dedent": "0.7.0",
     "diff": "3.5.0",
